@@ -11,11 +11,12 @@ import java.util.Random;
  * @author Kpaco
  */
 public class Level extends JPanel {
-    int SCREEN_WIDTH;
-    int SCREEN_HEIGHT;
+    int Map_Xsize;
+    int Map_Ysize;
     int UNIT_SIZE;
     int GAME_UNITS;
-    int Map[][];
+    int X[];
+    int Y[];
     int SnakeSize=3;
     int appleX;
     int appleY;
@@ -27,19 +28,20 @@ public class Level extends JPanel {
     Snake Player=new Snake();
     public Level(int x, int y)
     {
-        SCREEN_WIDTH=x;
-        SCREEN_HEIGHT=y;
-        GAME_UNITS=(SCREEN_WIDTH+SCREEN_HEIGHT);
-        Map=new int[GAME_UNITS][GAME_UNITS];
-        for (int i = 0; i < GAME_UNITS; i++) {
-            for (int j = 0; j < GAME_UNITS; j++) {
-                Map[i][j]=0;
-            }
-        }
+        Map_Xsize=x;
+        Map_Ysize=y;
+        GAME_UNITS=(Map_Xsize*Map_Ysize);
+        X=new int[Map_Xsize];
+        Y=new int[Map_Ysize];
+       
     }
-    public int[][] Get_Map()
+    public int[] Get_MapX()
     {
-        return Map;
+        return X;
+    }
+    public int[] Get_MapY()
+    {
+        return Y;
     }
     public int Get_MapSize()
     {
@@ -52,32 +54,14 @@ public class Level extends JPanel {
     public void Move()
     {
         for (int i = Player.getSnakeSize(); i > 0; i--) {
-               Map[xPos][i]=1;
+               X[i]=X[i-1];
+               Y[i]=Y[i-1];
         }
-       /*/ switch(Player.GetSnakeDir())
-        {
-            case 'u':
-                yPos++;       
-                Map[xPos][yPos-1]=0;
-                Map[xPos][yPos]=1;
-            case 'd':
-                yPos--;
-                Map[xPos][yPos+1]=0;
-                Map[xPos][yPos]=1;
-            case 'r':
-                xPos++;
-                Map[xPos][yPos]=1;
-            case 'l':
-                xPos--;
-                Map[xPos][yPos]=1;
-                
-        }/*/
     }
     public void GenApple()
     {
         Random ran=new Random();
         int ran_X=ran.nextInt(GAME_UNITS);
         int ran_Y=ran.nextInt(GAME_UNITS);
-        Map[ran_X][ran_Y]=1;
     }
 }
