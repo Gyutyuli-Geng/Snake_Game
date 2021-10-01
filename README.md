@@ -15,3 +15,4 @@ Move Moves Snake
 
 Gen apple: randomly places an apple on map
 
+------------------------------------------------
