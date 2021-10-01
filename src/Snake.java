@@ -11,8 +11,7 @@
 public class Snake {
     int snakeSize;
     char dir;
-    
-    
+    //probably remade into an array.
     public void setSnakeSize(int a)
     {
         snakeSize=a;
