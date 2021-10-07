@@ -35,6 +35,10 @@ public class Level extends JPanel {
         Y=new int[Map_Ysize];
        
     }
+    public int Get_Gameunits()
+    {
+        return GAME_UNITS;
+    }
     public int[] Get_MapX()
     {
         return X;
@@ -42,6 +46,14 @@ public class Level extends JPanel {
     public int[] Get_MapY()
     {
         return Y;
+    }
+    public int Get_MapXsize()
+    {
+        return Map_Xsize;
+    }
+    public int Get_MapYsize()
+    {
+        return Map_Ysize;
     }
     public int Get_MapSize()
     {
@@ -61,7 +73,7 @@ public class Level extends JPanel {
     public void GenApple()
     {
         Random ran=new Random();
-        int ran_X=ran.nextInt(GAME_UNITS);
-        int ran_Y=ran.nextInt(GAME_UNITS);
+        appleX=ran.nextInt(GAME_UNITS);
+        appleY=ran.nextInt(GAME_UNITS);
     }
 }
