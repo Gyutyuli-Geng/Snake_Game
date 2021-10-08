@@ -1,6 +1,13 @@
 # Snake_Game
 
 
+Weboldal
+gutyuligang.wordpress.com
+
+
+
+------------------------------------------------
+
 Level.java:
 
 Konstruktor Mapot generál
