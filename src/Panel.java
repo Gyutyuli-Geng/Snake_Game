@@ -15,35 +15,42 @@ import javax.swing.JPanel;
  * @author Kpaco
  */
 public class Panel extends JPanel implements ActionListener{
-    Level test=new Level(60,60);
-    static final int screen_width=600;
-    static final int screen_height=600;
+    Level test=new Level(600,600);
    int delay=75;
    Timer timer;
     Panel()
     {
-        this.setPreferredSize(new Dimension(test.Get_Gameunits(),test.Get_Gameunits()));
+        this.setPreferredSize(new Dimension(test.Get_ScreenWidth(),test.Get_ScreenHeight()));
         this.setBackground(Color.black);
         this.setFocusable(true);
         
+        start();
     }
     public void start()
     {
         test.GenApple();
         timer=new Timer(delay,this);
         timer.start();
+        
     }
-    public void paint(Graphics g){
-    super.paintComponent(g);
-    draw(g);
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        draw(g);
     }
     public void draw(Graphics g)
     {
-        for (int i = 0; i < screen_height/test.Get_Gameunits(); i++) 
+        for (int i = 0; i < test.Get_ScreenHeight()/test.Get_Gameunits(); i++) 
         {
-            g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_Gameunits());
+            g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight());
+            g.drawLine(0,i*test.Get_Gameunits(),test.Get_ScreenHeight(),i*test.Get_Gameunits());
         }
-    
+        g.setColor(Color.red);
+        g.fillOval(test.Get_appleX(), test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits());
+    }
+    public void drawApple(Graphics g)
+    {
+        
     }
     public void actionPerformed(ActionEvent e)
     {

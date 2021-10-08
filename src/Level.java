@@ -11,9 +11,9 @@ import java.util.Random;
  * @author Kpaco
  */
 public class Level extends JPanel {
-    int Map_Xsize;
-    int Map_Ysize;
-    int UNIT_SIZE;
+    int Screen_Width;
+    int Screen_Height;
+    int UNIT_SIZE=25;
     int GAME_UNITS;
     int X[];
     int Y[];
@@ -28,16 +28,16 @@ public class Level extends JPanel {
     Snake Player=new Snake();
     public Level(int x, int y)
     {
-        Map_Xsize=x;
-        Map_Ysize=y;
-        GAME_UNITS=(Map_Xsize*Map_Ysize);
-        X=new int[Map_Xsize];
-        Y=new int[Map_Ysize];
+        Screen_Width=x;
+        Screen_Height=y;
+        GAME_UNITS=(Screen_Width*Screen_Height/UNIT_SIZE);
+        X=new int[GAME_UNITS];
+        Y=new int[GAME_UNITS];
        
     }
     public int Get_Gameunits()
     {
-        return GAME_UNITS;
+        return UNIT_SIZE;
     }
     public int[] Get_MapX()
     {
@@ -47,13 +47,13 @@ public class Level extends JPanel {
     {
         return Y;
     }
-    public int Get_MapXsize()
+    public int Get_ScreenHeight()
     {
-        return Map_Xsize;
+        return  Screen_Height;
     }
-    public int Get_MapYsize()
+    public int Get_ScreenWidth()
     {
-        return Map_Ysize;
+        return  Screen_Width;
     }
     public int Get_MapSize()
     {
@@ -69,6 +69,14 @@ public class Level extends JPanel {
                X[i]=X[i-1];
                Y[i]=Y[i-1];
         }
+    }
+    public int Get_appleX()
+    {
+        return appleX;
+    }
+    public int Get_appleY()
+    {
+        return appleY;
     }
     public void GenApple()
     {
