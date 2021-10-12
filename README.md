@@ -22,4 +22,6 @@ Move Moves Snake
 
 Gen apple: randomly places an apple on map
 
+höhö majd írom a többit ha működik a cucc
+
 ------------------------------------------------
