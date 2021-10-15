@@ -15,9 +15,11 @@ import javax.swing.JPanel;
  * @author Kpaco
  */
 public class Panel extends JPanel implements ActionListener{
-    Level test=new Level(600,600);
+   Level test=new Level(1920,1080);
    int delay=75;
    Timer timer;
+   //GraphicsDevice gDev;
+   
     Panel()
     {
         this.setPreferredSize(new Dimension(test.Get_ScreenWidth(),test.Get_ScreenHeight()));
@@ -40,13 +42,19 @@ public class Panel extends JPanel implements ActionListener{
     }
     public void draw(Graphics g)
     {
-        for (int i = 0; i < test.Get_ScreenHeight()/test.Get_Gameunits(); i++) 
+       
+        for (int i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
         {
-            g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight());
-            g.drawLine(0,i*test.Get_Gameunits(),test.Get_ScreenHeight(),i*test.Get_Gameunits());
+            
+            g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits());
+        }
+        for (int x = 0; x <= test.Get_ScreenHeight(); x++) 
+        {
+            g.drawLine(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits());
         }
         g.setColor(Color.red);
         g.fillOval(test.Get_appleX(), test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits());
+        
     }
     public void drawApple(Graphics g)
     {
@@ -56,5 +64,7 @@ public class Panel extends JPanel implements ActionListener{
     {
         
     }
+    
+    
 }
 
