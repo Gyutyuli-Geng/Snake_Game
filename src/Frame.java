@@ -6,6 +6,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -23,7 +25,12 @@ public class Frame extends JFrame{
         this.setResizable(false);
         this.pack();
        // this.setUndecorated(true);
+        GraphicsDevice gDev;
+        GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
+        gDev=gEnv.getDefaultScreenDevice();
+        //gDev.setFullScreenWindow(this);
         this.setVisible(true);
+        //this.setAlwaysOnTop(true);
         this.setLocationRelativeTo(null);
     }
     
