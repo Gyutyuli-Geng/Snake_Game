@@ -33,7 +33,6 @@ public class Level extends JPanel {
         GAME_UNITS=(Screen_Width*Screen_Height/UNIT_SIZE);
         X=new int[GAME_UNITS];
         Y=new int[GAME_UNITS];
-       
     }
     public int Get_Gameunits()
     {
@@ -63,6 +62,14 @@ public class Level extends JPanel {
     {
         //put map from txt here if chosen.
     }
+    public int Calc_QuarterScreen()
+    {
+        return (Screen_Width/4)/UNIT_SIZE;
+    }
+    public int Calc_RightQuarter()
+    {
+        return ((Screen_Width/4)*3)/UNIT_SIZE;
+    }
     public void Move()
     {
         for (int i = Player.getSnakeSize(); i > 0; i--) {
@@ -81,7 +88,8 @@ public class Level extends JPanel {
     public void GenApple()
     {
         Random ran=new Random();
-        appleX=ran.nextInt(GAME_UNITS);
-        appleY=ran.nextInt(GAME_UNITS);
+        appleX=ran.nextInt((int)(Calc_RightQuarter())-Calc_QuarterScreen())+Calc_QuarterScreen();
+        appleX=appleX*UNIT_SIZE;
+        appleY=ran.nextInt((int)(Screen_Height/UNIT_SIZE))*UNIT_SIZE;
     }
 }
