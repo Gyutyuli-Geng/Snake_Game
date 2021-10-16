@@ -18,19 +18,21 @@ public class Panel extends JPanel implements ActionListener{
    Level test=new Level(1920,1080);
    int delay=75;
    Timer timer;
-   //GraphicsDevice gDev;
-   
+   boolean running=false;
     Panel()
     {
         this.setPreferredSize(new Dimension(test.Get_ScreenWidth(),test.Get_ScreenHeight()));
         this.setBackground(Color.black);
         this.setFocusable(true);
-        
+        this.requestFocusInWindow();
+        this.addKeyListener(new MyKeyAdapter());
         start();
     }
+    
     public void start()
     {
         test.GenApple();
+        running=true;
         timer=new Timer(delay,this);
         timer.start();
         
@@ -42,7 +44,7 @@ public class Panel extends JPanel implements ActionListener{
     }
     public void draw(Graphics g)
     {
-       
+       if(running){
         for (int i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
         {
             
@@ -52,18 +54,44 @@ public class Panel extends JPanel implements ActionListener{
         {
             g.drawLine(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits());
         }
+        
+        //draw apple
         g.setColor(Color.red);
         g.fillOval(test.Get_appleX(), test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits());
         
-    }
-    public void drawApple(Graphics g)
-    {
+        int x[]=test.Get_MapX();
+        int y[]=test.Get_MapY();
+        g.setColor(Color.green);
+        g.fillRect((int) test.getSnakeHeadX(),0, test.Get_Gameunits(), test.Get_Gameunits());
+        int a=test.getDistancebody()-1;
+        for (int i = 0; i < 3; i++) 
+        {
+                g.setColor(new Color(45,180,0));
+                g.fillRect((int) test.getSnakeTailX()+(a*test.Get_Gameunits()),0, test.Get_Gameunits(), test.Get_Gameunits());
+                a--;
+        }
         
+       }
     }
-    public void actionPerformed(ActionEvent e)
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(running)
+        {
+            test.Move();
+        }
+        repaint();
+    }
+    public class MyKeyAdapter extends KeyAdapter
     {
-        
+        @Override
+        public void keyPressed(KeyEvent e)
+        {
+            
+        }
     }
+    
+    
     
     
 }
