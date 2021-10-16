@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.awt.Point;
 import javax.swing.*;
 import java.util.Random;
 
@@ -23,9 +24,9 @@ public class Level extends JPanel {
     char direction ='R';
     int obstacleX;
     int obstacleY;
-    int xPos=0;
+    int xPos;
     int yPos=0;
-    Snake Player=new Snake();
+    Snake Player=new Snake(UNIT_SIZE,Calc_QuarterScreen());
     public Level(int x, int y)
     {
         Screen_Width=x;
@@ -33,6 +34,7 @@ public class Level extends JPanel {
         GAME_UNITS=(Screen_Width*Screen_Height/UNIT_SIZE);
         X=new int[GAME_UNITS];
         Y=new int[GAME_UNITS];
+        xPos=Calc_QuarterScreen()+Player.getBodyHeadDistance()-1;
     }
     public int Get_Gameunits()
     {
@@ -70,12 +72,43 @@ public class Level extends JPanel {
     {
         return ((Screen_Width/4)*3)/UNIT_SIZE;
     }
+    
     public void Move()
     {
+         
         for (int i = Player.getSnakeSize(); i > 0; i--) {
-               X[i]=X[i-1];
-               Y[i]=Y[i-1];
+            
         }
+       
+        switch(Player.GetSnakeDir())
+        {
+            /*/case 'U':
+                X[0]=X[0]+UNIT_SIZE;
+                break;/*/
+            case 'R':
+                xPos++;
+                Player.setHeadLocation(xPos*UNIT_SIZE,(int) Player.getSnakeHeadX());
+                Player.setTailLocation((xPos-Player.getBodyHeadDistance())*UNIT_SIZE,(int) Player.getSnakeTailX());
+                
+                
+                break;
+        }
+    }
+    public double getSnakeHeadX()
+    {
+        Point help=new Point();
+        help=Player.Snek.get(Player.Snek.size()-1);
+        return help.getX();
+    }
+    public double getSnakeTailX()
+    {
+        Point help=new Point();
+        help=Player.Snek.get(0);
+        return help.getX();
+    }
+    public int getDistancebody()
+    {
+        return Player.getBodyHeadDistance();
     }
     public int Get_appleX()
     {
