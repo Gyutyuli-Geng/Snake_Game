@@ -16,9 +16,10 @@ import javax.swing.JPanel;
  */
 public class Panel extends JPanel implements ActionListener{
    Level test=new Level(1920,1080);
-   int delay=75;
+   int delay=50;
    Timer timer;
    boolean running=false;
+   boolean check=false;
     Panel()
     {
         this.setPreferredSize(new Dimension(test.Get_ScreenWidth(),test.Get_ScreenHeight()));
@@ -31,7 +32,13 @@ public class Panel extends JPanel implements ActionListener{
     
     public void start()
     {
-        test.GenApple();
+        
+        while(!check)
+        {
+            test.GenApple();
+            if(!test.checkAppleGenCoords()) check=true;
+        }
+        
         running=true;
         timer=new Timer(delay,this);
         timer.start();
@@ -45,32 +52,62 @@ public class Panel extends JPanel implements ActionListener{
     public void draw(Graphics g)
     {
        if(running){
+        ///////////////DRAW GRID/////////////   
         for (int i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
         {
-            
             g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits());
         }
-        for (int x = 0; x <= test.Get_ScreenHeight(); x++) 
+        for (int x = 0; x < test.Screen_Height/test.Get_Gameunits(); x++) 
         {
             g.drawLine(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits());
         }
+        /////////////////////////////////////
+        
+           for (int i = 0; i < 8; i=i+2) 
+           {
+               int x=(int)test.GetWallPoint(i).getX();
+               int y=(int)test.GetWallPoint(i).getY();
+              if(test.GetWallPoint(i).getY()==test.GetWallPoint(i+1).getY())
+              {
+                  do
+                  {
+                     g.fillRect(x,y,test.Get_Gameunits(),test.Get_Gameunits());
+                     x=x+(1*test.Get_Gameunits());
+                  }
+                  while(x!=test.GetWallPoint(i+1).getX());
+              }
+             
+              else if(test.GetWallPoint(i).getX()==test.GetWallPoint(i+1).getX())
+              {
+                  do
+                  {
+                     g.fillRect(x,y,test.Get_Gameunits(),test.Get_Gameunits());
+                     y=y+(1*test.Get_Gameunits());
+                     
+                  }
+                  while(y!=test.GetWallPoint(i+1).getY());
+              }
+           }
+        
         
         //draw apple
         g.setColor(Color.red);
-        g.fillOval(test.Get_appleX(), test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits());
+        g.fillOval((int)test.Get_appleX(), (int)test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits());
         
-        int x[]=test.Get_MapX();
-        int y[]=test.Get_MapY();
+       ////////////////////DRAW SNAKE/////////
         g.setColor(Color.green);
-        g.fillRect((int) test.getSnakeHeadX(),0, test.Get_Gameunits(), test.Get_Gameunits());
-        int a=test.getDistancebody()-1;
-        for (int i = 0; i < 3; i++) 
+        g.fillRect((int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits());
+        for (int i = test.getSnakeSize()-2; i >= 0; i--) 
         {
-                g.setColor(new Color(45,180,0));
-                g.fillRect((int) test.getSnakeTailX()+(a*test.Get_Gameunits()),0, test.Get_Gameunits(), test.Get_Gameunits());
-                a--;
+                g.setColor(new Color(200,10,0));
+                g.fillRect((int) test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits());
         }
-        
+        /////////////////////////////////////
+       }
+       else
+       {
+           g.setFont(new Font("TimesRoman", Font.PLAIN, 70)); 
+           g.drawString("ABSOLUTE RETARD", 1920/2, 1080/2);
        }
     }
 
@@ -79,6 +116,12 @@ public class Panel extends JPanel implements ActionListener{
         if(running)
         {
             test.Move();
+            test.checkApple();
+            for (int i = 0; i < test.getSnakeSize()-2; i++) 
+            {
+              if(test.checkCollision(i)) running=false;
+            }
+            if(test.checkWallCollision()) running=false;
         }
         repaint();
     }
@@ -87,7 +130,21 @@ public class Panel extends JPanel implements ActionListener{
         @Override
         public void keyPressed(KeyEvent e)
         {
-            
+            switch(e.getKeyCode())
+            {
+                case KeyEvent.VK_RIGHT:
+                    test.SetSnakeDir('R');
+                    break;
+                case KeyEvent.VK_DOWN:
+                    test.SetSnakeDir('D');
+                    break;
+                case KeyEvent.VK_LEFT:
+                    test.SetSnakeDir('L');
+                    break;
+                case KeyEvent.VK_UP:
+                    test.SetSnakeDir('U');
+                    break;
+            }
         }
     }
     
