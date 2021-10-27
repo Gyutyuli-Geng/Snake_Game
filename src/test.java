@@ -18,21 +18,6 @@ public class test {
     public static void main(String[] args) {
         
         Frame asdf=new Frame();
-        /*/try{
-        FileWriter writer = new FileWriter("H:/demo.txt");
-        
-        Level test=new Level(5,5);
-        
-        for (int i = 0; i < 4; i++) {
-          
-            //test.Move();
-            //test.GenApple();
-            writer.write('s');
-            System.out.println(Arrays.deepToString(gay));
-            }  
-        writer.close();
-        }
-       catch(IOException e){}/*/
         }
        
     }
