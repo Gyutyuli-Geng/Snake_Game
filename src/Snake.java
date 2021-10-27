@@ -5,70 +5,93 @@
  */
 import java.awt.Point;
 import java.util.*;
+import java.lang.Math;
 /**
  *
  * @author Kpaco
  */
 public class Snake {
     int snakeSize=3;
-    char dir='R';
     Point head=new Point();
-    Point lastbody=new Point();
-    Point nullPoint=new Point();
-    
+    Point bodyPart=new Point();
+    Point Help=new Point();
+    boolean growsnake=false;
     ArrayList<Point>Snek=new ArrayList<Point>();
-    public Snake(int UNIT_SIZE, int QuarterWindow)
+    public Snake(int UNIT_SIZE)
     {
-        nullPoint.setLocation(0,0);
-        head.setLocation(0*UNIT_SIZE,0*UNIT_SIZE);
-        lastbody.setLocation(1*UNIT_SIZE,1*UNIT_SIZE);
+        head.setLocation(3*UNIT_SIZE,1*UNIT_SIZE);
         
-        Snek.add(0,lastbody);
-        for (int i = 0; i <= snakeSize-2; i++) {
-        Snek.add(nullPoint);
+        for (int i = 0; i < snakeSize-1; i++) {
+            bodyPart=new Point(i*UNIT_SIZE,0);
+            Snek.add(bodyPart);
         }
         Snek.add(head);
-        
     }
-    public int getBodyHeadDistance()
+    public Point getArrayPoint(int index)
     {
-        return Snek.size()-1;
+        return Snek.get(index);
     }
     public void setHeadLocation(int a, int b)
     {
         head.setLocation(a,b);
         Snek.set(Snek.size()-1, head);
     }
-    public void setTailLocation(int a, int b)
+    public void setBodyLocation(int a,int b,int index)
     {
-        lastbody.setLocation(a,b);
-        Snek.set(0, lastbody);
+        bodyPart=new Point(a,b);
+        Snek.set(index, bodyPart);
+    }
+    public void advanceSnakeBody()
+    {
+        Snek.remove(0);
+        Snek.add(Snek.indexOf(head),bodyPart=new Point(head));
+    }
+    public void growSnake()
+    {
+        growsnake=true;
+    }
+    public void addBody()
+    {
+        Snek.add(Snek.indexOf(head),bodyPart=new Point(head));
+    }
+    public Point getHead()
+    {
+        return head;
+    }
+    public int getIBodyPartPointX(int index)
+    {
+        Help=Snek.get(index);
+        int a=(int)Help.getX();
+        return a;
+    }
+    public int getIBodyPartPointY(int index)
+    {
+        Help=Snek.get(index);
+        int a=(int)Help.getY();
+        return a;
     }
     public double getSnakeHeadX()
     {
         return head.getX();
     }
-    public double getSnakeTailX()
+    public double getSnakeHeadY()
     {
-        return lastbody.getX();
+        return head.getY();
     }
-    public void growSnake()
+    
+    public boolean checkSnakeGrow()
     {
-        Snek.set(Snek.lastIndexOf(head),nullPoint);
-        Snek.add(head);
+        if(growsnake)
+        {
+            growsnake=false;
+            return true;
+        }
+        return false;
     }
     
     public void setSnakeSize(int a)
     {
         snakeSize=a;
-    }
-    public void SetSnakeDir(char d)
-    {
-        dir=d;
-    }
-    public char GetSnakeDir()
-    {
-        return dir;
     }
     public int getSnakeSize()
     {
