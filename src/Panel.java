@@ -9,19 +9,22 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.JPanel;
 /**
  *
  * @author Kpaco
  */
 public class Panel extends JPanel implements ActionListener{
-   Level test=new Level(1920,1080);
+   Level test=new Level();
    int delay=50;
    Timer timer;
    boolean running=false;
    boolean check=false;
-    Panel()
+    Panel(int x, int y)
     {
+        test.ConstructLvL(x, y);
         this.setPreferredSize(new Dimension(test.Get_ScreenWidth(),test.Get_ScreenHeight()));
         this.setBackground(Color.black);
         this.setFocusable(true);
@@ -29,16 +32,15 @@ public class Panel extends JPanel implements ActionListener{
         this.addKeyListener(new MyKeyAdapter());
         start();
     }
-    
+    static Image image;
+    static Image image2;
     public void start()
     {
-        
-        while(!check)
+        do
         {
             test.GenApple();
-            if(!test.checkAppleGenCoords()) check=true;
         }
-        
+        while(test.checkAppleGenCoords());
         running=true;
         timer=new Timer(delay,this);
         timer.start();
@@ -57,10 +59,11 @@ public class Panel extends JPanel implements ActionListener{
         {
             g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits());
         }
-        for (int x = 0; x < test.Screen_Height/test.Get_Gameunits(); x++) 
+        for (int x = 0; x < test.Screen_Height/test.Get_Gameunits()-1; x++) 
         {
             g.drawLine(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits());
         }
+        
         /////////////////////////////////////
         
            for (int i = 0; i < 8; i=i+2) 
@@ -71,6 +74,7 @@ public class Panel extends JPanel implements ActionListener{
               {
                   do
                   {
+                      
                      g.fillRect(x,y,test.Get_Gameunits(),test.Get_Gameunits());
                      x=x+(1*test.Get_Gameunits());
                   }
@@ -96,11 +100,18 @@ public class Panel extends JPanel implements ActionListener{
         
        ////////////////////DRAW SNAKE/////////
         g.setColor(Color.green);
+        String imgurl2="F:\\letöltések\\gentle.png";
+        image2=Toolkit.getDefaultToolkit().getImage(imgurl2);
         g.fillRect((int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits());
+        //g.drawImage(image2,(int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits(),test);
+        String imgurl="F:\\letöltések\\better.png";
+        
+        image = Toolkit.getDefaultToolkit().getImage(imgurl);
         for (int i = test.getSnakeSize()-2; i >= 0; i--) 
         {
                 g.setColor(new Color(200,10,0));
                 g.fillRect((int) test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits());
+               // g.drawImage(image, (int)test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits(), test);
         }
         /////////////////////////////////////
        }

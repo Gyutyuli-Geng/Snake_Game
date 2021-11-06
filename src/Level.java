@@ -14,7 +14,7 @@ import java.util.Random;
 public class Level extends JPanel {
     int Screen_Width;
     int Screen_Height;
-    int UNIT_SIZE=35;
+    int UNIT_SIZE=44;
     int GAME_UNITS;
     int X[];
     int Y[];
@@ -32,10 +32,14 @@ public class Level extends JPanel {
     Point apple=new Point();
     Snake Player=new Snake(UNIT_SIZE);
     Walls Wall=new Walls();
-    public Level(int x, int y)
+    public Level()
     {
-        Screen_Width=x;
-        Screen_Height=y;
+        
+    }
+    public void ConstructLvL(int x,int y)
+    {
+        Screen_Width=1920;
+        Screen_Height=1080;
         xPos=Calc_QuarterScreen()+Player.snakeSize-1;
         Wall.createWall(UNIT_SIZE, Calc_QuarterScreen(), Calc_RightQuarter(), Screen_Height);
     }
@@ -157,7 +161,7 @@ public class Level extends JPanel {
     }
     public boolean checkAppleGenCoords()
     {
-        int counter;
+        int counter=0;
         for (int i = 0; i < 8; i=i+2) 
         {
             if(apple.getX()==Wall.getArrayPoint(i).getX())
@@ -169,7 +173,8 @@ public class Level extends JPanel {
                     if (apple.getY()==counter) return true;
                 }
             }
-            else if(apple.getY()==Wall.getArrayPoint(i).getY())
+             
+            if(apple.getY()==Wall.getArrayPoint(i).getY())
             {
                 counter=(int)Wall.getArrayPoint(i).getX();
                 for (int j = 0; j < Wall.getPointDistnaceX(i)/UNIT_SIZE; j++)
@@ -185,6 +190,8 @@ public class Level extends JPanel {
         }
         return false;
     }
+    
+    
     public double getSnakeHeadX()
     {
         Point help=new Point();
@@ -223,7 +230,11 @@ public class Level extends JPanel {
         if(apple.equals(Player.getHead())) 
         {
             Player.growSnake();
-            GenApple();
+            do
+            {
+                GenApple();
+            }
+            while(checkAppleGenCoords());
         }
     }
     public double Get_appleX()
