@@ -59,14 +59,6 @@ public class Level extends JPanel {
     {
         return UNIT_SIZE;
     }
-    public int[] Get_MapX()
-    {
-        return X;
-    }
-    public int[] Get_MapY()
-    {
-        return Y;
-    }
     public int Get_ScreenHeight()
     {
         return  Screen_Height;
@@ -134,26 +126,21 @@ public class Level extends JPanel {
     }
     public boolean checkWallCollision()
     {
-        int counter=0;
+        int start=0;
+        int end=0;
         for (int i = 0; i < 8; i=i+2) 
         {
             if(Player.getHead().getX()==Wall.getArrayPoint(i).getX() )
             {
-                counter=(int)Wall.getArrayPoint(i).getY();
-                for (int j = 0; j < Wall.getPointDistnaceY(i)/UNIT_SIZE; j++) 
-                {
-                    counter=counter+UNIT_SIZE;
-                    if(Player.getHead().getY()==counter) return true;
-                }
+                start=(int)Wall.getArrayPoint(i).getY();
+                end=(int)Wall.getArrayPoint(i+1).getY();   
+                if(start<=Player.getHead().getY()&&Player.getHead().getY()<=end) return true;
             }
-            if(Player.getHead().getY()==Wall.getArrayPoint(i).getY())
+            else if(Player.getHead().getY()==Wall.getArrayPoint(i).getY())
             {
-                counter=(int)Wall.getArrayPoint(i).getX();
-                for (int j = 0; j < Wall.getPointDistnaceX(i)/UNIT_SIZE; j++) 
-                {
-                    counter=counter+UNIT_SIZE;
-                    if(Player.getHead().getX()==counter) return true;
-                }
+                start=(int)Wall.getArrayPoint(i).getX();
+                end=(int)Wall.getArrayPoint(i+1).getX();
+                if(start<=Player.getHead().getX()&&Player.getHead().getX()<=end) return true;
             }
         }
         return false;
@@ -161,27 +148,21 @@ public class Level extends JPanel {
     }
     public boolean checkAppleGenCoords()
     {
-        int counter=0;
+        int start=0;
+        int end=0;
         for (int i = 0; i < 8; i=i+2) 
         {
             if(apple.getX()==Wall.getArrayPoint(i).getX())
             {
-                counter=(int)Wall.getArrayPoint(i).getY();
-                for (int j = 0; j < Wall.getPointDistnaceY(i)/UNIT_SIZE; j++)
-                {
-                    counter=counter+UNIT_SIZE;
-                    if (apple.getY()==counter) return true;
-                }
+                start=(int)Wall.getArrayPoint(i).getY();
+                end=(int)Wall.getArrayPoint(i+1).getY();   
+                if(start<=apple.getY()&&apple.getY()<=end) return true;
             }
-             
-            if(apple.getY()==Wall.getArrayPoint(i).getY())
+            else if(apple.getY()==Wall.getArrayPoint(i).getY())
             {
-                counter=(int)Wall.getArrayPoint(i).getX();
-                for (int j = 0; j < Wall.getPointDistnaceX(i)/UNIT_SIZE; j++)
-                {
-                    counter=counter+UNIT_SIZE;
-                    if (apple.getX()==counter) return true;
-                }
+                start=(int)Wall.getArrayPoint(i).getX();
+                end=(int)Wall.getArrayPoint(i+1).getX();
+                if(start<=apple.getX()&&apple.getX()<=end) return true;
             }
         }
         for (int i = 0; i < Player.Snek.size()-1; i++) 
