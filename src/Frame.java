@@ -19,16 +19,17 @@ import javax.swing.JPanel;
 public class Frame extends JFrame{
     Frame()
     {
-        this.add(new Panel());
+        
+        GraphicsDevice gDev;
+        GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
+        gDev=gEnv.getDefaultScreenDevice();
+        this.add(new Panel(gDev.getDisplayMode().getWidth(),gDev.getDisplayMode().getHeight()));
         this.setTitle("snek");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.pack();
        // this.setUndecorated(true);
-        GraphicsDevice gDev;
-        GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
-        gDev=gEnv.getDefaultScreenDevice();
-        //gDev.setFullScreenWindow(this);
+       //gDev.setFullScreenWindow(this);
         this.setVisible(true);
         //this.setAlwaysOnTop(true);
         this.setLocationRelativeTo(null);
