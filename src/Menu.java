@@ -103,16 +103,13 @@ public class Menu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-        private class lmao extends Thread
-        {
-            Frame asdf=new Frame();
-        }
+        
+           
+        
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        this.setDefaultCloseOperation(Menu.HIDE_ON_CLOSE);
         
         this.dispose();
-        lmao a=new lmao();
-        a.start();
+        Frame asdf=new Frame();
         
         
     }//GEN-LAST:event_jButton6ActionPerformed
