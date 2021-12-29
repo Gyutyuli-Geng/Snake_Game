@@ -10,6 +10,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 /**
@@ -23,10 +24,14 @@ public class Frame extends JFrame{
         GraphicsDevice gDev;
         GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
         gDev=gEnv.getDefaultScreenDevice();
-        this.add(new Panel(gDev.getDisplayMode().getWidth(),gDev.getDisplayMode().getHeight()));
+      //  MainMenu menu=new MainMenu(gDev.getDisplayMode().getWidth(),gDev.getDisplayMode().getHeight());
+        
+       /* JButton start=new JButton();
+        menu.add(start);/*/
+        this.add(new Panel(1920,1080));
         this.setTitle("snek");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
+        this.setResizable(true);
         this.pack();
        // this.setUndecorated(true);
        //gDev.setFullScreenWindow(this);
