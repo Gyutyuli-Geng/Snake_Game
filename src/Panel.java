@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.util.Random;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.geom.*;
 import javax.swing.JPanel;
 /**
  *
@@ -23,7 +22,7 @@ public class Panel extends JPanel implements ActionListener{
    Timer timer;
    boolean running=false;
    int color=0;
-   Panel(int x, int y)
+    Panel(int x, int y)
     {
         test.ConstructLvL(x, y);
         this.setPreferredSize(new Dimension(x,y));
@@ -54,71 +53,66 @@ public class Panel extends JPanel implements ActionListener{
     }
     public void drawApple(Graphics g)
     {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.red);
-        g2.fill(new Ellipse2D.Double(test.Get_appleX(), test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits()));
+        g.setColor(Color.red);
+        g.fillOval((int)test.Get_appleX(), (int)test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits());
         
     }
     public void drawSnake(Graphics g)
     {
-        Graphics2D g2 = (Graphics2D) g;
         g.setColor(Color.green);
         //String imgurl2="F:\\letöltések\\gentle.png";
-       // image2=Toolkit.getDefaultToolkit().getImage(imgurl2);
-        g2.fill(new Rectangle2D.Double(test.getSnakeHeadX(), test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits()));
-       // g.drawImage(image2,(int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits(),test);
-       //String imgurl="F:\\letöltések\\better.png";
-       // image = Toolkit.getDefaultToolkit().getImage(imgurl);
+        //image2=Toolkit.getDefaultToolkit().getImage(imgurl2);
+        g.fillRect((int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits());
+        //g.drawImage(image2,(int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits(),test);
+       // String imgurl="F:\\letöltések\\better.png";
+        
+        //image = Toolkit.getDefaultToolkit().getImage(imgurl);
         for (int i = test.getSnakeSize()-2; i >= 0; i--) 
         {
-                g2.setColor(Color.white);
-                g2.fill(new Rectangle2D.Double(test.getBodyX(i),test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits()));
-                //g.drawImage(image, (int)test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits(), test);
+                g.setColor(new Color(200,10,0));
+                g.fillRect((int) test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits());
+               // g.drawImage(image, (int)test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits(), test);
         }
     }
     public void drawWall(Graphics g)
-    {   
-        Graphics2D g2 = (Graphics2D) g;
+    {
         for (int i = 0; i < 8; i=i+2) 
            {
-               double x=test.GetWallPoint(i).getX();
-               double y=test.GetWallPoint(i).getY();
+               int x=(int)test.GetWallPoint(i).getX();
+               int y=(int)test.GetWallPoint(i).getY();
               if(test.GetWallPoint(i).getY()==test.GetWallPoint(i+1).getY())
               {
                   do
                   {
-                     g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-                     x=x*test.Get_Gameunits();
+                      
+                     g.fillRect(x,y,test.Get_Gameunits(),test.Get_Gameunits());
+                     x=x+(1*test.Get_Gameunits());
                   }
                   while(x!=test.GetWallPoint(i+1).getX());
-                  /*/g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX(),y,test.Get_Gameunits(),test.Get_Gameunits()));/*/
               }
              
               else if(test.GetWallPoint(i).getX()==test.GetWallPoint(i+1).getX())
               {
-                /*/ do
+                  do
                   {
-                   //  g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
+                     g.fillRect(x,y,test.Get_Gameunits(),test.Get_Gameunits());
                      y=y+(1*test.Get_Gameunits());
                      
                   }
-                  while(y!=test.GetWallPoint(i+1).getY());/*/
+                  while(y!=test.GetWallPoint(i+1).getY());
               }
            }
     }
     public void drawGrid(Graphics g)
     {
-        Graphics2D g2=(Graphics2D) g;
-        
-        g2.setColor(Color.red);
-        for (double i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
+        g.setColor(Color.red);
+       for (int i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
         {
-            g2.draw(new Line2D.Double(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits()));
+            g.drawLine(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits());
         }
-        for (double x = 0; x < test.Screen_Height/test.Get_Gameunits()-1; x++) 
+        for (int x = 0; x < test.Screen_Height/test.Get_Gameunits()-1; x++) 
         {
-            g2.draw(new Line2D.Double(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits()));
+            g.drawLine(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits());
         }
         
     }
@@ -133,7 +127,8 @@ public class Panel extends JPanel implements ActionListener{
        }
        else
        {
-           g.setFont(new Font("TimesRoman", Font.PLAIN, 70));
+           g.setFont(new Font("TimesRoman", Font.PLAIN, 70)); 
+          // g.drawString("ABSOLUTE RETARD", 1920/2, 1080/2);
        }
     }
 
