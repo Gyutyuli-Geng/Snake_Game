@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import javax.swing.*;
 import java.util.Random;
 
@@ -14,28 +15,19 @@ import java.util.Random;
 public class Level extends JPanel {
     int Screen_Width;
     int Screen_Height;
-    int UNIT_SIZE=44;
-    int GAME_UNITS;
-    int X[];
-    int Y[];
-    int SnakeZize=3;
-    int appleX;
-    int appleY;
+    double MAP_UNITS=80;
+    double UNIT_SIZE=1080/MAP_UNITS;
+    double appleX;
+    double appleY;
     char direction ='R';
-    int obstacleX;
-    int obstacleY;
-    int xPos;
-    int yPos;
+    double xPos;
+    double yPos;
     char dir='R';
-    boolean changeDir=false;
-    boolean gameOver=false;
+    Random ran=new Random();
     Point apple=new Point();
     Snake Player=new Snake(UNIT_SIZE);
     Walls Wall=new Walls();
-    public Level()
-    {
-        
-    }
+    
     public void ConstructLvL(int x,int y)
     {
         Screen_Width=1920;
@@ -43,19 +35,12 @@ public class Level extends JPanel {
         xPos=Calc_QuarterScreen()+Player.snakeSize-1;
         Wall.createWall(UNIT_SIZE, Calc_QuarterScreen(), Calc_RightQuarter(), Screen_Height);
     }
-    public Point GetWallPoint(int i)
+    public Point2D.Double GetWallPoint(int i)
     {
         return Wall.getArrayPoint(i);
     }
-    public int getWallDistnaceY(int i)
-    {
-        return (int)Wall.getPointDistnaceY(i);
-    }
-    public int getWallDistnaceX(int i)
-    {
-        return (int)Wall.getPointDistnaceX(i);
-    }
-    public int Get_Gameunits()
+ 
+    public double Get_Gameunits()
     {
         return UNIT_SIZE;
     }
@@ -67,19 +52,11 @@ public class Level extends JPanel {
     {
         return  Screen_Width;
     }
-    public int Get_MapSize()
-    {
-        return GAME_UNITS;
-    }
-    public void Generate_Map()
-    {
-        //put map from txt here if chosen.
-    }
-    public int Calc_QuarterScreen()
+    public double Calc_QuarterScreen()
     {
         return (Screen_Width/4)/UNIT_SIZE;
     }
-    public int Calc_RightQuarter()
+    public double Calc_RightQuarter()
     {
         return ((Screen_Width/4)*3)/UNIT_SIZE;
     }
@@ -117,12 +94,7 @@ public class Level extends JPanel {
     }
     public boolean checkCollision(int i)
     {
-        if(Player.getHead().equals(Player.getArrayPoint(i)))
-        {
-            return true;
-        }
-        
-        return false;
+        return Player.getHead().equals(Player.getArrayPoint(i));
     }
     public boolean checkWallCollision()
     {
@@ -172,12 +144,9 @@ public class Level extends JPanel {
         return false;
     }
     
-    
     public double getSnakeHeadX()
     {
-        Point help=new Point();
-        help=Player.Snek.get(Player.Snek.size()-1);
-        return help.getX();
+        return Player.Snek.get(Player.Snek.size()-1).getX();
     }
     public double getBodyX(int index)
     {
@@ -189,9 +158,9 @@ public class Level extends JPanel {
     }
     public double getSnakeHeadY()
     {
-        Point help=new Point();
-        help=Player.Snek.get(Player.Snek.size()-1);
-        return help.getY();
+      
+        return Player.Snek.get(Player.Snek.size()-1).getY();
+        
     }
     public int getSnakeSize()
     {
@@ -228,10 +197,9 @@ public class Level extends JPanel {
     }
     public void GenApple()
     {
-        Random ran=new Random();
-        appleX=ran.nextInt((int)(Calc_RightQuarter())-Calc_QuarterScreen())+Calc_QuarterScreen();
         
-        appleY=ran.nextInt((int)(Screen_Height/UNIT_SIZE))*UNIT_SIZE;
+        appleX=Calc_QuarterScreen()+(Calc_RightQuarter()-Calc_QuarterScreen())*ran.nextDouble();
+        appleY=(Screen_Height/UNIT_SIZE)*ran.nextDouble()*UNIT_SIZE;
         apple.setLocation(appleX*UNIT_SIZE,appleY);
     }
 }

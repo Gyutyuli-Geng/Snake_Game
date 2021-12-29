@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.*;
 import java.lang.Math;
 /**
@@ -12,39 +13,41 @@ import java.lang.Math;
  */
 public class Snake {
     int snakeSize=3;
-    Point head=new Point();
-    Point bodyPart=new Point();
-    Point Help=new Point();
+    Point2D.Double head=new Point2D.Double();
+    Point2D.Double bodyPart=new Point2D.Double();
     boolean growsnake=false;
-    ArrayList<Point>Snek=new ArrayList<Point>();
-    public Snake(int UNIT_SIZE)
+    ArrayList<Point2D.Double>Snek=new ArrayList<Point2D.Double>();
+    public Snake(double UNIT_SIZE)
     {
         head.setLocation(3*UNIT_SIZE,1*UNIT_SIZE);
         
         for (int i = 0; i < snakeSize-1; i++) {
-            bodyPart=new Point(i*UNIT_SIZE,0);
+            bodyPart=new Point2D.Double(i*UNIT_SIZE,0);
+            
             Snek.add(bodyPart);
         }
         Snek.add(head);
     }
-    public Point getArrayPoint(int index)
+    public Point2D.Double getArrayPoint(int index)
     {
         return Snek.get(index);
     }
-    public void setHeadLocation(int a, int b)
+    public void setHeadLocation(double a, double b)
     {
         head.setLocation(a,b);
         Snek.set(Snek.size()-1, head);
     }
-    public void setBodyLocation(int a,int b,int index)
+    public void setBodyLocation(double a,double b,int index)
     {
-        bodyPart=new Point(a,b);
+        bodyPart=new Point2D.Double(a,b);
         Snek.set(index, bodyPart);
     }
     public void advanceSnakeBody()
     {
         Snek.remove(0);
-        Snek.add(Snek.indexOf(head),bodyPart=new Point(head));
+        bodyPart=new Point2D.Double();
+        bodyPart.setLocation(head);
+        Snek.add(Snek.indexOf(head),bodyPart);
     }
     public void growSnake()
     {
@@ -52,23 +55,21 @@ public class Snake {
     }
     public void addBody()
     {
-        Snek.add(Snek.indexOf(head),bodyPart=new Point(head));
+        bodyPart=new Point2D.Double();
+        bodyPart.setLocation(head);
+        Snek.add(Snek.indexOf(head),bodyPart);
     }
-    public Point getHead()
+    public Point2D.Double getHead()
     {
         return head;
     }
-    public int getIBodyPartPointX(int index)
+    public double getIBodyPartPointX(int index)
     {
-        Help=Snek.get(index);
-        int a=(int)Help.getX();
-        return a;
+        return Snek.get(index).getX();
     }
-    public int getIBodyPartPointY(int index)
+    public double getIBodyPartPointY(int index)
     {
-        Help=Snek.get(index);
-        int a=(int)Help.getY();
-        return a;
+        return Snek.get(index).getY();
     }
     public double getSnakeHeadX()
     {

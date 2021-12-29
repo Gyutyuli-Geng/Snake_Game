@@ -110,8 +110,6 @@ public class Menu extends javax.swing.JFrame {
         
         this.dispose();
         Frame asdf=new Frame();
-        
-        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
