@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.*;
 import java.lang.Math;
 /**
@@ -13,47 +14,39 @@ import java.lang.Math;
  */
 public class Walls {
     
-    ArrayList<Point>Wall=new ArrayList<Point>();
-    Point wallStart;
-    Point wallEnd;
+    ArrayList<Point2D.Double>Wall=new ArrayList<Point2D.Double>();
+    Point2D.Double wallStart;
+    Point2D.Double wallEnd;
+    
     int distance;
     public Walls()
     {
       
     }
-    public void createWall(int UNIT_SIZE,int quarterScreen,int rightQuarter,int screenHeight)
+    public void createWall(double UNIT_SIZE,double quarterScreen,double rightQuarter,double screenHeight)
     {
         //TODO:
         //FIX THIS FUCKING SHITE HEIGHT COORDS
-        int x=(screenHeight/UNIT_SIZE)-1;
-        int help=quarterScreen*UNIT_SIZE;
+        double x=(screenHeight/UNIT_SIZE);
+        double help=quarterScreen*UNIT_SIZE;
         for (int i = 0; i < 2; i++) 
         {
-            Wall.add(wallStart=new Point(quarterScreen*UNIT_SIZE,i*(x*UNIT_SIZE)));
-            Wall.add(wallEnd=new Point(rightQuarter*UNIT_SIZE,i*(x*UNIT_SIZE)));
+            Wall.add(wallStart=new Point2D.Double(quarterScreen*UNIT_SIZE,i*(x*UNIT_SIZE)));
+            Wall.add(wallEnd=new Point2D.Double(rightQuarter*UNIT_SIZE,i*(x*UNIT_SIZE)));
         }
         for (int i = 0; i < 2; i++) 
         {
             if(i==1)help=rightQuarter*UNIT_SIZE;
-            Wall.add(wallStart=new Point(help,0));
-            Wall.add(wallEnd=new Point(help,x*UNIT_SIZE));
+            Wall.add(wallStart=new Point2D.Double(help,0));
+            Wall.add(wallEnd=new Point2D.Double(help,x*UNIT_SIZE));
         }
     }
     public void addWall()
     {
         
     }
-    public int getPointDistnaceX(int i)
-    {
-        distance=(int)Math.sqrt(Math.pow((Wall.get(i+1).getX()-Wall.get(i).getX()),2)+Math.pow((Wall.get(i+1).getY()-Wall.get(i).getY()),2));
-        return distance;
-    }
-    public int getPointDistnaceY(int i)
-    {
-        distance=(int)Math.sqrt(Math.pow((Wall.get(i+1).getX()-Wall.get(i).getX()),2)+Math.pow((Wall.get(i+1).getY()-Wall.get(i).getY()),2));
-        return distance;
-    }
-    public Point getArrayPoint(int i)
+  
+    public Point2D.Double getArrayPoint(int i)
     {
         return Wall.get(i);
     }
