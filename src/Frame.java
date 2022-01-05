@@ -18,20 +18,30 @@ import javax.swing.JPanel;
  * @author Kpaco
  */
 public class Frame extends JFrame{
-    Frame()
+    Frame(String paneltype,int width,int height)
     {
         
-        GraphicsDevice gDev;
+        /*/GraphicsDevice gDev;
         GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
-        gDev=gEnv.getDefaultScreenDevice();
+        gDev=gEnv.getDefaultScreenDevice();/*/
       //  MainMenu menu=new MainMenu(gDev.getDisplayMode().getWidth(),gDev.getDisplayMode().getHeight());
-        
+       
        /* JButton start=new JButton();
         menu.add(start);/*/
-        this.add(new Panel(1920,1080));
+        switch (paneltype){
+            case "edit":
+                this.add(new LevelEditor(width,height));
+                break;
+            case "game":
+                this.add(new Panel(width,height));
+                break;
+            default:
+                this.add(new Panel(width,height));
+        }
+        //this.add(new LevelEditor(width,height));
         this.setTitle("snek");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(true);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setResizable(false);
         this.pack();
        // this.setUndecorated(true);
        //gDev.setFullScreenWindow(this);
