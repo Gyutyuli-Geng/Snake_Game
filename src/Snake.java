@@ -17,9 +17,12 @@ public class Snake {
     Point2D.Double bodyPart=new Point2D.Double();
     boolean growsnake=false;
     ArrayList<Point2D.Double>Snek=new ArrayList<Point2D.Double>();
-    public Snake(double UNIT_SIZE)
+    public Snake()
     {
-        head.setLocation(3*UNIT_SIZE,1*UNIT_SIZE);
+    }
+    public void CreateSnake(double UNIT_SIZE)
+    {
+         head.setLocation(3*UNIT_SIZE,1*UNIT_SIZE);
         
         for (int i = 0; i < snakeSize-1; i++) {
             bodyPart=new Point2D.Double(i*UNIT_SIZE,0);

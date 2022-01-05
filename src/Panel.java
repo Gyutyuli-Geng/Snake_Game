@@ -24,7 +24,7 @@ public class Panel extends JPanel implements ActionListener{
    boolean running=false;
    int color=0;
    Panel(int x, int y)
-    {
+   {
         test.ConstructLvL(x, y);
         this.setPreferredSize(new Dimension(x,y));
         this.setBackground(Color.black);
@@ -32,7 +32,7 @@ public class Panel extends JPanel implements ActionListener{
         this.requestFocusInWindow();
         this.addKeyListener(new MyKeyAdapter());
         start();
-    }
+   }
     static Image image;
     static Image image2;
     public void start()
@@ -63,49 +63,52 @@ public class Panel extends JPanel implements ActionListener{
     {
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(Color.green);
-        //String imgurl2="F:\\letöltések\\gentle.png";
-       // image2=Toolkit.getDefaultToolkit().getImage(imgurl2);
+        
         g2.fill(new Rectangle2D.Double(test.getSnakeHeadX(), test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits()));
-       // g.drawImage(image2,(int) test.getSnakeHeadX(), (int) test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits(),test);
-       //String imgurl="F:\\letöltések\\better.png";
-       // image = Toolkit.getDefaultToolkit().getImage(imgurl);
+      
         for (int i = test.getSnakeSize()-2; i >= 0; i--) 
         {
                 g2.setColor(Color.white);
                 g2.fill(new Rectangle2D.Double(test.getBodyX(i),test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits()));
-                //g.drawImage(image, (int)test.getBodyX(i), (int) test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits(), test);
         }
     }
     public void drawWall(Graphics g)
     {   
         Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.red);
         for (int i = 0; i < 8; i=i+2) 
            {
-               double x=test.GetWallPoint(i).getX();
-               double y=test.GetWallPoint(i).getY();
+              double x=test.GetWallPoint(i).getX();
+              double y=test.GetWallPoint(i).getY();
               if(test.GetWallPoint(i).getY()==test.GetWallPoint(i+1).getY())
               {
-                  do
+                 do
                   {
                      g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-                     x=x*test.Get_Gameunits();
-                  }
-                  while(x!=test.GetWallPoint(i+1).getX());
-                  /*/g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX(),y,test.Get_Gameunits(),test.Get_Gameunits()));/*/
+                     x=x+test.Get_Gameunits();
+                 }
+                  while(x!=test.GetWallPoint(i+1).getX() || x<test.GetWallPoint(i+1).getX());
+                  g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
+                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX(),y,test.Get_Gameunits(),test.Get_Gameunits()));
               }
              
               else if(test.GetWallPoint(i).getX()==test.GetWallPoint(i+1).getX())
               {
-                /*/ do
+                 do
                   {
-                   //  g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-                     y=y+(1*test.Get_Gameunits());
-                     
+                     g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
+                     y=y+test.Get_Gameunits();
                   }
-                  while(y!=test.GetWallPoint(i+1).getY());/*/
+                  while(y!=test.GetWallPoint(i+1).getY() || y<test.GetWallPoint(i+1).getY());
+                  g2.fill(new Rectangle2D.Double(y,x,test.Get_Gameunits(),test.Get_Gameunits()));
+                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getY(),x,test.Get_Gameunits(),test.Get_Gameunits()));
               }
            }
+        /*/for (int i = 8; i < test.Wall.Wall.size(); i++) {
+            double x=test.GetWallPoint(i).getX();
+            double y=test.GetWallPoint(i).getY();
+            g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
+        }/**/
     }
     public void drawGrid(Graphics g)
     {
@@ -121,6 +124,11 @@ public class Panel extends JPanel implements ActionListener{
             g2.draw(new Line2D.Double(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits()));
         }
         
+    }
+    public void getMouseClick(int x, int y)
+    {
+      //test.Wall.addWall(x, y);
+      System.out.println("bigman: "+x+"anotherbigman"+y);
     }
     public void draw(Graphics g)
     {

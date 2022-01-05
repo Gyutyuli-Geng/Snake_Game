@@ -27,27 +27,49 @@ public class Walls {
     {
         //TODO:
         //FIX THIS FUCKING SHITE HEIGHT COORDS
-        double x=(screenHeight/UNIT_SIZE);
-        double help=quarterScreen*UNIT_SIZE;
+        double x=Math.round(screenHeight/UNIT_SIZE);
+        double y=quarterScreen*UNIT_SIZE;
+        while(y<rightQuarter*UNIT_SIZE)
+        {
+            y=y+UNIT_SIZE;
+        }
         for (int i = 0; i < 2; i++) 
         {
             Wall.add(wallStart=new Point2D.Double(quarterScreen*UNIT_SIZE,i*(x*UNIT_SIZE)));
-            Wall.add(wallEnd=new Point2D.Double(rightQuarter*UNIT_SIZE,i*(x*UNIT_SIZE)));
+            Wall.add(wallEnd=new Point2D.Double(y,i*(x*UNIT_SIZE)));
         }
         for (int i = 0; i < 2; i++) 
         {
-            if(i==1)help=rightQuarter*UNIT_SIZE;
-            Wall.add(wallStart=new Point2D.Double(help,0));
-            Wall.add(wallEnd=new Point2D.Double(help,x*UNIT_SIZE));
+            if(i==1)y=quarterScreen*UNIT_SIZE;
+            Wall.add(wallStart=new Point2D.Double(y,0));
+            Wall.add(wallEnd=new Point2D.Double(y,x*UNIT_SIZE));
         }
     }
-    public void addWall()
+    public void addWall(double x, double y,double UNIT_SIZE,double quarterScreen,double rightQuarter,double screenHeight)
     {
-        
+        for (double i = quarterScreen*UNIT_SIZE; i < rightQuarter*UNIT_SIZE; i=i+UNIT_SIZE)
+        {
+            if(x>i&&x<i+UNIT_SIZE)
+            {
+                x=i;
+                break;
+            }
+        }
+        for (double i = 0; i < screenHeight; i+=UNIT_SIZE) 
+        {
+            if(y>i && y<i+UNIT_SIZE)
+            {
+                y=i;
+                break;
+            }
+            
+        }
+       
     }
-  
+        
     public Point2D.Double getArrayPoint(int i)
     {
         return Wall.get(i);
     }
+
 }
