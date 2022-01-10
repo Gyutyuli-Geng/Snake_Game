@@ -23,6 +23,8 @@ public class Level extends JPanel {
     double xPos;
     double yPos;
     char dir='R';
+    int highscore=0;
+    double Hoffset;
     Random ran=new Random();
     Point apple=new Point();
     Snake Player=new Snake();
@@ -31,7 +33,8 @@ public class Level extends JPanel {
     public void ConstructLvL(int x,int y)
     {
         Screen_Width=x;
-        Screen_Height=y;
+        Screen_Height=(x/16)*9;
+        Hoffset=(y-Screen_Height)/2;
         UNIT_SIZE=Math.round(Screen_Width/MAP_UNITS);
         Player.CreateSnake(UNIT_SIZE);
         xPos=Calc_QuarterScreen()+Player.snakeSize-1;
@@ -41,6 +44,10 @@ public class Level extends JPanel {
     {
         return Wall.getArrayPoint(i);
     }
+    public int Get_Highscore()
+    {
+        return highscore;
+    }
     public void Set_Gameunits(int x)
     {
         MAP_UNITS=x;
@@ -48,6 +55,14 @@ public class Level extends JPanel {
     public double Get_Gameunits()
     {
         return UNIT_SIZE;
+    }
+    public void Inc_Highscore()
+    {
+        highscore++;
+    }
+    public double Get_Hoffset()
+    {
+        return Hoffset;
     }
     public double Get_ScreenHeight()
     {
@@ -163,9 +178,7 @@ public class Level extends JPanel {
     }
     public double getSnakeHeadY()
     {
-      
         return Player.Snek.get(Player.Snek.size()-1).getY();
-        
     }
     public int getSnakeSize()
     {
@@ -185,6 +198,7 @@ public class Level extends JPanel {
         if(apple.equals(Player.getHead())) 
         {
             Player.growSnake();
+            highscore++;
             do
             {
                 GenApple();
@@ -202,8 +216,8 @@ public class Level extends JPanel {
     }
     public void GenApple()
     {
-        appleX=Math.round(Calc_QuarterScreen()+(Calc_RightQuarter()-Calc_QuarterScreen())*ran.nextInt());
-        appleY=Math.round((Screen_Height/UNIT_SIZE)*ran.nextInt()*UNIT_SIZE);
-        apple.setLocation(appleX*UNIT_SIZE,appleY);
+        appleX=ran.nextInt((int)Calc_RightQuarter()-(int)Calc_QuarterScreen())+Calc_QuarterScreen();
+        appleY=(ran.nextInt((int)(Screen_Height/UNIT_SIZE)-0)+0);
+        apple.setLocation(Math.floor(appleX*UNIT_SIZE),Math.floor(appleY*UNIT_SIZE));
     }
 }

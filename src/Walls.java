@@ -47,24 +47,27 @@ public class Walls {
     }
     public void addWall(double x, double y,double UNIT_SIZE,double quarterScreen,double rightQuarter,double screenHeight)
     {
-        for (double i = quarterScreen*UNIT_SIZE; i < rightQuarter*UNIT_SIZE; i=i+UNIT_SIZE)
+        boolean first=false;
+        boolean last=true;
+        if(!first) 
         {
-            if(x>i&&x<i+UNIT_SIZE)
-            {
-                x=i;
-                break;
-            }
+            Wall.add(wallStart=new Point2D.Double(x*UNIT_SIZE,y*UNIT_SIZE));
+            first=true;
+            last=false;
         }
-        for (double i = 0; i < screenHeight; i+=UNIT_SIZE) 
+        else if(!last)
         {
-            if(y>i && y<i+UNIT_SIZE)
+            if(x==getArrayPoint(Wall.size()-1).getX() || y==getArrayPoint(Wall.size()-1).getY())
             {
-                y=i;
-                break;
+                Wall.add(wallEnd=new Point2D.Double(x*UNIT_SIZE,y*UNIT_SIZE));
             }
-            
+            else
+            {
+                
+            }
+            last=true;
+            first=false;
         }
-       
     }
         
     public Point2D.Double getArrayPoint(int i)

@@ -18,6 +18,7 @@ import javax.swing.JPanel;
  * @author Kpaco
  */
 public class Panel extends JPanel implements ActionListener{
+    
    Level test=new Level();
    int delay=40;
    Timer timer;
@@ -56,7 +57,7 @@ public class Panel extends JPanel implements ActionListener{
     {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.red);
-        g2.fill(new Ellipse2D.Double(test.Get_appleX(), test.Get_appleY(), test.Get_Gameunits(), test.Get_Gameunits()));
+        g2.fill(new Ellipse2D.Double(test.Get_appleX(), test.Get_appleY()+test.Get_Hoffset(), test.Get_Gameunits(), test.Get_Gameunits()));
         
     }
     public void drawSnake(Graphics g)
@@ -64,12 +65,12 @@ public class Panel extends JPanel implements ActionListener{
         Graphics2D g2 = (Graphics2D) g;
         g.setColor(Color.green);
         
-        g2.fill(new Rectangle2D.Double(test.getSnakeHeadX(), test.getSnakeHeadY(), test.Get_Gameunits(), test.Get_Gameunits()));
+        g2.fill(new Rectangle2D.Double(test.getSnakeHeadX(), test.getSnakeHeadY()+test.Get_Hoffset(), test.Get_Gameunits(), test.Get_Gameunits()));
       
         for (int i = test.getSnakeSize()-2; i >= 0; i--) 
         {
                 g2.setColor(Color.white);
-                g2.fill(new Rectangle2D.Double(test.getBodyX(i),test.getBodyY(i), test.Get_Gameunits(), test.Get_Gameunits()));
+                g2.fill(new Rectangle2D.Double(test.getBodyX(i),test.getBodyY(i)+test.Get_Hoffset(), test.Get_Gameunits(), test.Get_Gameunits()));
         }
     }
     public void drawWall(Graphics g)
@@ -84,24 +85,24 @@ public class Panel extends JPanel implements ActionListener{
               {
                  do
                   {
-                     g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
+                     g2.fill(new Rectangle2D.Double(x,y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
                      x=x+test.Get_Gameunits();
                  }
                   while(x!=test.GetWallPoint(i+1).getX() || x<test.GetWallPoint(i+1).getX());
-                  g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX(),y,test.Get_Gameunits(),test.Get_Gameunits()));
+                  g2.fill(new Rectangle2D.Double(x,y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
+                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX(),y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
               }
              
               else if(test.GetWallPoint(i).getX()==test.GetWallPoint(i+1).getX())
               {
                  do
                   {
-                     g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
+                     g2.fill(new Rectangle2D.Double(x,y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
                      y=y+test.Get_Gameunits();
                   }
                   while(y!=test.GetWallPoint(i+1).getY() || y<test.GetWallPoint(i+1).getY());
-                  g2.fill(new Rectangle2D.Double(y,x,test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getY(),x,test.Get_Gameunits(),test.Get_Gameunits()));
+                  g2.fill(new Rectangle2D.Double(y+test.Get_Hoffset(),x,test.Get_Gameunits(),test.Get_Gameunits()));
+                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getY()+test.Get_Hoffset(),x,test.Get_Gameunits(),test.Get_Gameunits()));
               }
            }
         /*/for (int i = 8; i < test.Wall.Wall.size(); i++) {
@@ -115,15 +116,28 @@ public class Panel extends JPanel implements ActionListener{
         Graphics2D g2=(Graphics2D) g;
         
         g2.setColor(Color.red);
-        for (double i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
+        for (double i = test.Calc_QuarterScreen(); i <=test.Calc_RightQuarter(); i++) 
         {
-            g2.draw(new Line2D.Double(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits()));
+            g2.draw(new Line2D.Double(i*test.Get_Gameunits(),0+test.Get_Hoffset(),i*test.Get_Gameunits(),test.Get_ScreenHeight()+test.Get_Hoffset()));
         }
         for (double x = 0; x < test.Screen_Height/test.Get_Gameunits()-1; x++) 
         {
-            g2.draw(new Line2D.Double(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits()));
+            g2.draw(new Line2D.Double(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits()+test.Get_Hoffset(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits()+test.Get_Hoffset()));
         }
         
+    }
+    public void addLabel(int n)
+    {
+        JLabel label = new JLabel("High Score: "+n);
+       
+        label.setForeground(Color.green);
+        int labelX=(int)Math.round(2*test.Get_Gameunits());
+        int labelY=(int)Math.round(2*test.Get_Gameunits());
+        
+        label.setBounds(labelX, labelY,10000,10000);
+        label.setSize(500,500);
+        label.setVisible(true);
+         this.add(label);
     }
     public void getMouseClick(int x, int y)
     {
@@ -138,6 +152,7 @@ public class Panel extends JPanel implements ActionListener{
         drawWall(g);
         drawApple(g);
         drawSnake(g);
+        addLabel(test.Get_Highscore());
        }
        else
        {
@@ -145,6 +160,11 @@ public class Panel extends JPanel implements ActionListener{
        }
     }
 
+    
+    @Override
+    public void setLayout(LayoutManager mgr) {
+        super.setLayout(null); //To change body of generated methods, choose Tools | Templates.
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(running)

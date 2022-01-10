@@ -17,7 +17,7 @@ public class test {
      */
     public static void main(String[] args) {
         
-        Frame asdf=new Frame();
+      //  Frame asdf=new Frame();
         }
        
     }
