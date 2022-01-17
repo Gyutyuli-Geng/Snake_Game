@@ -12,21 +12,58 @@ import java.util.Random;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.*;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 /**
  *
  * @author Kpaco
  */
-public class Panel extends JPanel implements ActionListener{
+public class Panel extends JPanel implements ActionListener {
     
    Level test=new Level();
    int delay=40;
    Timer timer;
    boolean running=false;
+   boolean HardMode=false;
+   boolean AiMode=false;
    int color=0;
-   Panel(int x, int y)
+   ArrayList<BufferedImage>SnakeIMG=new ArrayList<BufferedImage>();
+   JLabel label = new JLabel();
+   String datapath = System.getProperty("user.dir")+"/Skins/";
+   Toolkit t=Toolkit.getDefaultToolkit();  
+   Image Apple;
+   BufferedImage Snakehead;
+   BufferedImage Snakebody;
+   BufferedImage SnakeTail;
+   Image Walls;
+   Image Bg;
+   Draw Render=new Draw();
+   Panel(int x, int y,int gameSpeed,String FileName,boolean Hardmode,boolean aiMode,String SelectedSkin,int UNIT_SIZE)
    {
-        test.ConstructLvL(x, y);
+       try
+       {
+        Apple=t.getImage(datapath+SelectedSkin+"/apple.png");
+        Walls=t.getImage(datapath+SelectedSkin+"/wall.png");
+        Bg=t.getImage(datapath+SelectedSkin+"/block.png");
+        this.Snakehead = ImageIO.read(new File(datapath+SelectedSkin+"/snake_head.png"));
+        this.Snakebody = ImageIO.read(new File(datapath+SelectedSkin+"/snake_body.png"));
+        this.SnakeTail = ImageIO.read(new File(datapath+SelectedSkin+"/snake_tail.png"));
+        SnakeIMG.add(Snakehead);
+        SnakeIMG.add(Snakebody);
+        SnakeIMG.add(SnakeTail);
+       }
+       catch(IOException e){}
+        if(FileName==null) test.Set_Gameunits(UNIT_SIZE);
+        HardMode=Hardmode;
+        AiMode=aiMode;
+        delay=gameSpeed;
+        test.ConstructLvL(x, y,FileName);
         this.setPreferredSize(new Dimension(x,y));
         this.setBackground(Color.black);
         this.setFocusable(true);
@@ -45,91 +82,28 @@ public class Panel extends JPanel implements ActionListener{
         while(test.checkAppleGenCoords());
         running=true;
         timer=new Timer(delay,this);
+        
         timer.start();
         
+    }
+    public AffineTransformOp imgRotation(double rotation,BufferedImage img)
+    {
+        double locX=img.getWidth()/2;
+        double locY=img.getHeight()/2;
+        AffineTransform tx=AffineTransform.getRotateInstance(rotation,locX,locY);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+        return op;
     }
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         draw(g);
     }
-    public void drawApple(Graphics g)
-    {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.red);
-        g2.fill(new Ellipse2D.Double(test.Get_appleX(), test.Get_appleY()+test.Get_Hoffset(), test.Get_Gameunits(), test.Get_Gameunits()));
-        
-    }
-    public void drawSnake(Graphics g)
-    {
-        Graphics2D g2 = (Graphics2D) g;
-        g.setColor(Color.green);
-        
-        g2.fill(new Rectangle2D.Double(test.getSnakeHeadX(), test.getSnakeHeadY()+test.Get_Hoffset(), test.Get_Gameunits(), test.Get_Gameunits()));
-      
-        for (int i = test.getSnakeSize()-2; i >= 0; i--) 
-        {
-                g2.setColor(Color.white);
-                g2.fill(new Rectangle2D.Double(test.getBodyX(i),test.getBodyY(i)+test.Get_Hoffset(), test.Get_Gameunits(), test.Get_Gameunits()));
-        }
-    }
-    public void drawWall(Graphics g)
-    {   
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.red);
-        for (int i = 0; i < 8; i=i+2) 
-           {
-              double x=test.GetWallPoint(i).getX();
-              double y=test.GetWallPoint(i).getY();
-              if(test.GetWallPoint(i).getY()==test.GetWallPoint(i+1).getY())
-              {
-                 do
-                  {
-                     g2.fill(new Rectangle2D.Double(x,y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
-                     x=x+test.Get_Gameunits();
-                 }
-                  while(x!=test.GetWallPoint(i+1).getX() || x<test.GetWallPoint(i+1).getX());
-                  g2.fill(new Rectangle2D.Double(x,y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX(),y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
-              }
-             
-              else if(test.GetWallPoint(i).getX()==test.GetWallPoint(i+1).getX())
-              {
-                 do
-                  {
-                     g2.fill(new Rectangle2D.Double(x,y+test.Get_Hoffset(),test.Get_Gameunits(),test.Get_Gameunits()));
-                     y=y+test.Get_Gameunits();
-                  }
-                  while(y!=test.GetWallPoint(i+1).getY() || y<test.GetWallPoint(i+1).getY());
-                  g2.fill(new Rectangle2D.Double(y+test.Get_Hoffset(),x,test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getY()+test.Get_Hoffset(),x,test.Get_Gameunits(),test.Get_Gameunits()));
-              }
-           }
-        /*/for (int i = 8; i < test.Wall.Wall.size(); i++) {
-            double x=test.GetWallPoint(i).getX();
-            double y=test.GetWallPoint(i).getY();
-            g2.fill(new Rectangle2D.Double(x,y,test.Get_Gameunits(),test.Get_Gameunits()));
-        }/**/
-    }
-    public void drawGrid(Graphics g)
-    {
-        Graphics2D g2=(Graphics2D) g;
-        
-        g2.setColor(Color.red);
-        for (double i = test.Calc_QuarterScreen(); i <=test.Calc_RightQuarter(); i++) 
-        {
-            g2.draw(new Line2D.Double(i*test.Get_Gameunits(),0+test.Get_Hoffset(),i*test.Get_Gameunits(),test.Get_ScreenHeight()+test.Get_Hoffset()));
-        }
-        for (double x = 0; x < test.Screen_Height/test.Get_Gameunits()-1; x++) 
-        {
-            g2.draw(new Line2D.Double(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits()+test.Get_Hoffset(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits()+test.Get_Hoffset()));
-        }
-        
-    }
+   
     public void addLabel(int n)
     {
-        JLabel label = new JLabel("High Score: "+n);
-       
+        
+        label.setText("High Score: "+n);
         label.setForeground(Color.green);
         int labelX=(int)Math.round(2*test.Get_Gameunits());
         int labelY=(int)Math.round(2*test.Get_Gameunits());
@@ -139,19 +113,14 @@ public class Panel extends JPanel implements ActionListener{
         label.setVisible(true);
          this.add(label);
     }
-    public void getMouseClick(int x, int y)
-    {
-      //test.Wall.addWall(x, y);
-      System.out.println("bigman: "+x+"anotherbigman"+y);
-    }
     public void draw(Graphics g)
     {
        if(running)
        {
-        drawGrid(g);
-        drawWall(g);
-        drawApple(g);
-        drawSnake(g);
+        Render.drawBg(g,test,Bg);
+        Render.drawWall(g,test,Walls);
+        Render.drawApple(g,test,Apple);
+        Render.drawSnake(g,test,SnakeIMG);
         addLabel(test.Get_Highscore());
        }
        else
@@ -170,7 +139,12 @@ public class Panel extends JPanel implements ActionListener{
         if(running)
         {
             test.Move();
-            test.checkApple();
+            if(test.checkApple()&&HardMode) 
+            {
+                delay-=20;
+                timer.setDelay(delay);
+                //finish randomized delay time
+            }
             for (int i = 0; i < test.getSnakeSize()-2; i++) 
             {
               if(test.checkCollision(i)) running=false;

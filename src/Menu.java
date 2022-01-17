@@ -1,8 +1,21 @@
 
+import java.awt.Component;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,7 +29,7 @@ import javax.swing.JFrame;
  */
 public class Menu extends javax.swing.JFrame {
     Options OptFrame;
-    
+    String FileName;
     
     /**
      * Creates new form snake
@@ -42,6 +55,9 @@ public class Menu extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(650, 441));
@@ -51,6 +67,11 @@ public class Menu extends javax.swing.JFrame {
         jLabel1.setText("Snake game");
 
         jButton1.setText("level select");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("skin select");
 
@@ -82,37 +103,62 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Currently loaded level:");
+
+        jLabel3.setText("No level loaded");
+
+        jButton7.setText("Unload level");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(325, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap())
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jButton1)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(299, 299, 299)))))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addContainerGap())
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton1)
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(299, 299, 299)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton7)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(18, 18, 18)
+                .addGap(28, 28, 28)
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
@@ -132,21 +178,38 @@ public class Menu extends javax.swing.JFrame {
         GraphicsDevice gDev;
         GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
         gDev=gEnv.getDefaultScreenDevice();
-        
-         
         DisplayMode[] mode=gDev.getDisplayModes();
-        for (int j = 0; j < mode.length-1; j++) {
-               
-                if(mode[j].getWidth()==mode[j+1].getWidth());
-                else  OptFrame.addRes(mode[j].getWidth()+"x"+mode[j].getHeight());
-               
-            }
+        for (int j = mode.length-1; j > 0; j--) 
+        {       
+                if(mode[j].getWidth()==mode[j-1].getWidth());
+                else  OptFrame.addRes(mode[j].getWidth()+"x"+mode[j].getHeight());       
+        }
+        String datapath = System.getProperty("user.dir")+"/Skins/";
+        File[] directories = new File(datapath).listFiles(File::isDirectory);
+        for (int i = 0; i < directories.length; i++) 
+        {
+            OptFrame.addSkin(directories[i].getName());    
+        }
+        OptFrame.setSelectedskin("Default");
+        
+                
     }
+    
+   
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         int[] screenRes=OptFrame.getScreenRes();
         int width=screenRes[0];
         int height=screenRes[1];
-        Frame asdf=new Frame("game",width,height);
+        List<JCheckBox> CheckBoxList = new ArrayList<JCheckBox>();
+        OptFrame.StoreComponents();
+        for (int i = 0; i < OptFrame.compList.size(); i++) 
+        {    
+            if(OptFrame.GetComponent(i) instanceof JCheckBox)
+            {
+                CheckBoxList.add((JCheckBox)OptFrame.GetComponent(i));
+            }
+        }
+        Frame asdf=new Frame("game",width,height,OptFrame.getSelectedDifficulty(),FileName,CheckBoxList,OptFrame.getSelectedSkin(),OptFrame.getUnitSize());
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -158,7 +221,16 @@ public class Menu extends javax.swing.JFrame {
         int[] screenRes=OptFrame.getScreenRes();
         int width=screenRes[0];
         int height=screenRes[1];
-        Frame asdf=new Frame("edit",width,height);
+        OptFrame.StoreComponents();
+        List<JCheckBox> CheckBoxList = new ArrayList<JCheckBox>();
+        for (int i = 0; i < OptFrame.compList.size(); i++) 
+        {    
+            if(OptFrame.GetComponent(i) instanceof JCheckBox)
+            {
+                CheckBoxList.add((JCheckBox)OptFrame.GetComponent(i));
+            }
+        }
+        Frame asdf=new Frame("edit",width,height,OptFrame.getSelectedDifficulty(),FileName,CheckBoxList,OptFrame.getSelectedSkin(),OptFrame.getUnitSize());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -166,8 +238,33 @@ public class Menu extends javax.swing.JFrame {
        
         OptFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         OptFrame.setVisible(true);
-        //GraphicsDevice[] gDev=GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // lvlselect
+        JFileChooser fc=new JFileChooser();
+        File workingDirectory=new File(System.getProperty("user.dir"));
+        FileFilter filter = new FileNameExtensionFilter("Level Save","testSave");
+        fc.setCurrentDirectory(workingDirectory);
+        fc.setDialogTitle("Select a level");
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fc.setFileFilter(filter);
+        if(fc.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)
+        {
+          //  
+        }
+        FileName=fc.getSelectedFile().getName();
+        jLabel3.setText(FileName);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        if(!jLabel3.equals("No level loaded")) 
+        {
+            FileName=null;
+            jLabel3.setText("No level loaded");
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,6 +311,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

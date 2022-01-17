@@ -28,48 +28,48 @@ public class Walls {
         //TODO:
         //FIX THIS FUCKING SHITE HEIGHT COORDS
         double x=Math.round(screenHeight/UNIT_SIZE);
-        double y=quarterScreen*UNIT_SIZE;
-        while(y<rightQuarter*UNIT_SIZE)
+        double y=quarterScreen;
+        while(y<rightQuarter)
         {
-            y=y+UNIT_SIZE;
+           y++;
         }
         for (int i = 0; i < 2; i++) 
         {
-            Wall.add(wallStart=new Point2D.Double(quarterScreen*UNIT_SIZE,i*(x*UNIT_SIZE)));
-            Wall.add(wallEnd=new Point2D.Double(y,i*(x*UNIT_SIZE)));
+            Wall.add(wallStart=new Point2D.Double(quarterScreen,i*(x)));
+            Wall.add(wallEnd=new Point2D.Double(y,i*(x)));
         }
         for (int i = 0; i < 2; i++) 
         {
-            if(i==1)y=quarterScreen*UNIT_SIZE;
+            if(i==1)y=quarterScreen;
             Wall.add(wallStart=new Point2D.Double(y,0));
-            Wall.add(wallEnd=new Point2D.Double(y,x*UNIT_SIZE));
+            Wall.add(wallEnd=new Point2D.Double(y,x));
         }
     }
-    public void addWall(double x, double y,double UNIT_SIZE,double quarterScreen,double rightQuarter,double screenHeight)
+   
+    public void deleteWall(int index)
     {
-        boolean first=false;
-        boolean last=true;
-        if(!first) 
+        if(index==-1) return;
+        Wall.remove(index);
+        Wall.remove(index);
+    }
+    public void Add(ArrayList<Point2D.Double>Coords, double UNIT_SIZE)
+    {
+        if(Coords.size()==3)
         {
-            Wall.add(wallStart=new Point2D.Double(x*UNIT_SIZE,y*UNIT_SIZE));
-            first=true;
-            last=false;
+            for (int i = 0; i < 2; i++) {
+                Wall.add(wallStart=new Point2D.Double(Coords.get(i).getX(),Coords.get(i).getY()));
+                Wall.add(wallEnd=new Point2D.Double(Coords.get(2).getX(),Coords.get(2).getY()));
+            }
         }
-        else if(!last)
-        {
-            if(x==getArrayPoint(Wall.size()-1).getX() || y==getArrayPoint(Wall.size()-1).getY())
-            {
-                Wall.add(wallEnd=new Point2D.Double(x*UNIT_SIZE,y*UNIT_SIZE));
-            }
-            else
-            {
-                
-            }
-            last=true;
-            first=false;
+        else{
+        Wall.add(wallStart=new Point2D.Double(Coords.get(0).getX(),Coords.get(0).getY()));
+        Wall.add(wallEnd=new Point2D.Double(Coords.get(1).getX(),Coords.get(1).getY()));
         }
     }
-        
+    public void CalcDistance(Point2D x, Point2D y)
+    {
+        Math.sqrt(Math.pow(y.getX()-x.getY(),2)+Math.pow(y.getY()-x.getY(),2));
+    }
     public Point2D.Double getArrayPoint(int i)
     {
         return Wall.get(i);

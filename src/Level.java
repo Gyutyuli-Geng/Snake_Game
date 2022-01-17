@@ -17,6 +17,9 @@ public class Level extends JPanel {
     double Screen_Height;
     double MAP_UNITS=40;
     double UNIT_SIZE;
+    double HeadRotation;
+    double BodyRotation;
+    double TailRotation;
     double appleX;
     double appleY;
     char direction ='R';
@@ -29,17 +32,55 @@ public class Level extends JPanel {
     Point apple=new Point();
     Snake Player=new Snake();
     Walls Wall=new Walls();
-    
-    public void ConstructLvL(int x,int y)
+    CollisionChecker Collcheck=new CollisionChecker();
+    public void Load(String filename)
+    {
+        try{
+        SaveData data=(SaveData) ResourceManager.load(filename);
+        MAP_UNITS=data.MAP_UNITS;
+        Wall.Wall=data.Wall;
+        highscore=data.highscore;
+        }
+        catch(Exception e)
+        {}
+        
+    }
+    public void Save()
+    {
+        
+        try{
+        SaveData data=new SaveData();
+        data.MAP_UNITS=MAP_UNITS;
+        data.Wall=Wall.Wall;
+        data.highscore=highscore;
+        ResourceManager.save(data, "1.testSave");
+        }
+        catch(Exception e){}
+    }
+    public void ConstructLvL(int x,int y,String FileName)
     {
         Screen_Width=x;
         Screen_Height=(x/16)*9;
         Hoffset=(y-Screen_Height)/2;
+        if(FileName==null)
+        {
         UNIT_SIZE=Math.round(Screen_Width/MAP_UNITS);
         Player.CreateSnake(UNIT_SIZE);
         xPos=Calc_QuarterScreen()+Player.snakeSize-1;
+        yPos=1;
         Wall.createWall(UNIT_SIZE, Calc_QuarterScreen(), Calc_RightQuarter(), Screen_Height);
+        }
+        else
+        {
+            UNIT_SIZE=Math.round(Screen_Width/MAP_UNITS);
+            Player.CreateSnake(UNIT_SIZE);
+            xPos=Calc_QuarterScreen()+Player.snakeSize-1;
+            yPos=1;
+            Load(FileName);
+        }
+        
     }
+  
     public Point2D.Double GetWallPoint(int i)
     {
         return Wall.getArrayPoint(i);
@@ -118,46 +159,18 @@ public class Level extends JPanel {
     }
     public boolean checkWallCollision()
     {
-        int start=0;
-        int end=0;
-        for (int i = 0; i < 8; i=i+2) 
-        {
-            if(Player.getHead().getX()==Wall.getArrayPoint(i).getX() )
-            {
-                start=(int)Wall.getArrayPoint(i).getY();
-                end=(int)Wall.getArrayPoint(i+1).getY();   
-                if(start<=Player.getHead().getY()&&Player.getHead().getY()<=end) return true;
-            }
-            else if(Player.getHead().getY()==Wall.getArrayPoint(i).getY())
-            {
-                start=(int)Wall.getArrayPoint(i).getX();
-                end=(int)Wall.getArrayPoint(i+1).getX();
-                if(start<=Player.getHead().getX()&&Player.getHead().getX()<=end) return true;
-            }
-        }
-        return false;
-        
+        return Collcheck.checkWallCollision(Wall, Player.getHead().getX(), Player.getHead().getY(), UNIT_SIZE);
+    }
+    public int CheckMouseClickForDelete(double mouseX, double mouseY)
+    {
+        mouseX*=UNIT_SIZE;
+        mouseY*=UNIT_SIZE;
+        return Collcheck.checkWallCollision(Wall, mouseX, mouseY, UNIT_SIZE, 0);
     }
     public boolean checkAppleGenCoords()
     {
-        int start=0;
-        int end=0;
-        for (int i = 0; i < 8; i=i+2) 
-        {
-            if(apple.getX()==Wall.getArrayPoint(i).getX())
-            {
-                start=(int)Wall.getArrayPoint(i).getY();
-                end=(int)Wall.getArrayPoint(i+1).getY();   
-                if(start<=apple.getY()&&apple.getY()<=end) return true;
-            }
-            else if(apple.getY()==Wall.getArrayPoint(i).getY())
-            {
-                start=(int)Wall.getArrayPoint(i).getX();
-                end=(int)Wall.getArrayPoint(i+1).getX();
-                if(start<=apple.getX()&&apple.getX()<=end) return true;
-            }
-        }
-        for (int i = 0; i < Player.Snek.size()-1; i++) 
+        if(Collcheck.checkWallCollision(Wall, apple.getX(), apple.getY(), UNIT_SIZE)) return true;
+        for (int i = 0; i < Player.Snek.size(); i++) 
         {
             if(apple.equals(Player.Snek.get(i))) return true;
         }
@@ -193,18 +206,18 @@ public class Level extends JPanel {
         return dir;
     }
   
-    public void checkApple()
+    public boolean checkApple()
     {
-        if(apple.equals(Player.getHead())) 
+        if(!apple.equals(Player.getHead())) return false;
+        Player.growSnake();
+        Save();
+        highscore++;
+        do
         {
-            Player.growSnake();
-            highscore++;
-            do
-            {
-                GenApple();
-            }
-            while(checkAppleGenCoords());
+            GenApple();
         }
+        while(checkAppleGenCoords());
+        return true;
     }
     public double Get_appleX()
     {
