@@ -6,6 +6,8 @@ gutyuligang.wordpress.com
 
 TODO:
 -stop existing
+-Kill AI
+-also fuck image rotation <3
 
 ------------------------------------------------
 
