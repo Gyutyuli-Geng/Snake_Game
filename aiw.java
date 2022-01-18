@@ -22,14 +22,19 @@ public class aiw {
        {
             for (int j = 0; j < RowNum; j++)
             {
-                if (i%2 == 1)
-                {   
-                    Grid[i][j] = (i)*(ColumNum-1)+j;
-                    
-                }
                 if (i%2 == 0)
+                {   
+                    if (j > 0)
+                    {
+                        Grid[i][j] = (i)*(RowNum-1)+j;
+                    }
+                }
+                if (i%2 == 1)
                 {
-                    Grid[i][j] = i*(ColumNum-1)-(j);
+                    if (j > 0)
+                    {
+                        Grid[i][j] = (i+1)*(RowNum-1)-(j-1);
+                    }
                 }
             }     
        }
