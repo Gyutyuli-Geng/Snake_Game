@@ -5,11 +5,7 @@ Weboldal
 gutyuligang.wordpress.com
 
 TODO:
--dynamic rendering
--working options menu
--save/load levels
--level editor
--implement AI
+-stop existing
 
 ------------------------------------------------
 
