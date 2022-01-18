@@ -6,8 +6,13 @@ import java.util.List;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.regex.Pattern;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 /*
@@ -27,7 +32,9 @@ public class Options extends javax.swing.JFrame {
      */
     public Options() {
         initComponents();
-        
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton2);
+        buttonGroup1.add(jRadioButton3);
     }
 
     /**
@@ -39,11 +46,12 @@ public class Options extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jCheckBox2 = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -60,14 +68,7 @@ public class Options extends javax.swing.JFrame {
 
         jPanel1.setForeground(new java.awt.Color(0, 51, 255));
 
-        jCheckBox1.setText("Hard mode");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox2.setText("AI mode");
+        jCheckBox2.setText("AI_mode");
         jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox2ActionPerformed(evt);
@@ -78,6 +79,13 @@ public class Options extends javax.swing.JFrame {
 
         jTextField1.setText("40");
 
+        jCheckBox1.setText("Hard_mode");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,14 +93,16 @@ public class Options extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 288, Short.MAX_VALUE))
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +137,7 @@ public class Options extends javax.swing.JFrame {
 
         jRadioButton2.setText("Windowed");
 
-        jRadioButton3.setText("Windowed Borderless");
+        jRadioButton3.setText("Windowed_Borderless");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -188,23 +198,22 @@ public class Options extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(72, 72, 72)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, 179, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(72, 72, 72)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboBox2, 0, 179, Short.MAX_VALUE)))
+                            .addComponent(jButton1))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -251,16 +260,73 @@ public class Options extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        StoreComponents();
+
+        CreateFile createfile=new CreateFile();
         SaveSettings save=new SaveSettings();
+        ArrayList<String> SaveState=new ArrayList<String>();
         try{
-        ResourceManager.save(save,"ayy.SETTINGS");
+        createfile.CreateTxt("Settings.txt");
+        createfile.openWrite("Settings.txt");
+        for (Component c : compList) 
+        {
+            if (c instanceof JCheckBox)
+            {
+                JCheckBox box = (JCheckBox) c;
+                SaveState.add(box.getText()+": ");
+                SaveState.add(String.valueOf(box.isSelected()));
+                createfile.Write(SaveState);
+                SaveState.clear();
+            }
+            if(c instanceof JTextField)
+            {
+                JTextField usize=(JTextField) c;
+                SaveState.add("Game_Units: ");
+                SaveState.add(usize.getText());
+                createfile.Write(SaveState);
+                SaveState.clear();
+            }
+            if (c instanceof JRadioButton)
+            {
+                JRadioButton button=(JRadioButton)c;
+                if(button.isSelected())
+                {
+                SaveState.add("Display-Mode: ");
+                SaveState.add(button.getText());
+                createfile.Write(SaveState);
+                SaveState.clear();
+                }
+            }
+            if(c instanceof JComboBox)
+            {
+                JComboBox box=(JComboBox) c;
+                String Text;
+                if(box==jComboBox1)
+                {
+                    SaveState.add("Screen_Resolution: ");
+                    SaveState.add(box.getSelectedItem().toString());
+                }
+                if(box==jComboBox2)
+                {
+                    SaveState.add("Difficulty: ");
+                    SaveState.add(box.getSelectedItem().toString());
+                }
+                if(box==jComboBox3)
+                {
+                    SaveState.add("Skin: ");
+                SaveState.add(box.getSelectedItem().toString());
+                }
+                createfile.Write(SaveState);
+                SaveState.clear();
+            }
+        //ResourceManager.save(save,"ayy.SETTINGS");
         }
-        catch(Exception e){}
+        createfile.closeWrite();
+        }
+        catch(Exception e){System.out.print(e);}
     }//GEN-LAST:event_jButton1ActionPerformed
-    public void listAllComponentsIn(Container parent)
+    public void listAllComponentsIn(Container Options)
     {
-    for (Component c : parent.getComponents())
+    for (Component c : Options.getComponents())
     {
         compList.add(c);
         if (c instanceof Container)  listAllComponentsIn((Container)c);  
@@ -309,12 +375,6 @@ public class Options extends javax.swing.JFrame {
     {
         jComboBox1.addItem(i);
     }
-  
-    public void saveState()
-    {
-    
-   
-    }
     public int getUnitSize()
     {
         return Integer.parseInt(jTextField1.getText());
@@ -338,6 +398,76 @@ public class Options extends javax.swing.JFrame {
         }
         return 0;
     }
+    public void optLoad()
+    {
+      
+ 
+        try
+        {
+        CreateFile createfile=new CreateFile();
+        BufferedReader br = new BufferedReader(new FileReader("Settings.txt"));
+        String line=null;
+        boolean isread=false;
+        for (Component c : compList)
+        {
+            
+            if (c instanceof JCheckBox)
+            {
+                line=br.readLine();
+                String sub;
+                sub=line.substring(line.indexOf(" "));
+                JCheckBox box = (JCheckBox) c;
+                box.setSelected(Boolean.parseBoolean(sub.trim()));
+            }
+            if(c instanceof JTextField)
+            {
+                line=br.readLine();
+                String sub;
+                sub=line.substring(line.indexOf(" ")); 
+                JTextField field=(JTextField) c;
+                field.setText(sub.trim());
+            }
+            if (c instanceof JRadioButton)
+            {
+                JRadioButton button=(JRadioButton)c;
+                if(!isread)
+                {
+                    line=br.readLine();
+                    isread=true;
+                }
+                String sub;
+                sub=line.substring(line.indexOf(" "));
+                if(button.getText().equals(sub.trim())) button.setSelected(true);
+            }
+            if(c instanceof JComboBox)
+            {
+                JComboBox box=(JComboBox) c;
+                String sub;
+                if(box==jComboBox1)
+                {
+                    line=br.readLine();
+                    sub=line.substring(line.indexOf(" "));
+                    box.setSelectedItem(sub.trim());
+                }
+                if(box==jComboBox2)
+                {
+                    line=br.readLine();
+                    sub=line.substring(line.indexOf(" "));
+                    box.setSelectedItem(sub.trim());
+                }
+                if(box==jComboBox3)
+                {
+                    line=br.readLine();
+                    sub=line.substring(line.indexOf(" "));
+                    box.setSelectedItem(sub.trim());
+                }
+            }
+        }
+        br.close();
+        }
+        catch(Exception e){System.out.print(e);}
+    }
+    
     public int[] getScreenRes()
     {
         String help=jComboBox1.getSelectedItem().toString();
@@ -347,7 +477,6 @@ public class Options extends javax.swing.JFrame {
             screenRes[i]=Integer.parseInt(res[i]);
         }
         return screenRes;
-        
     }
     public String getSelectedSkin()
     {
@@ -362,12 +491,12 @@ public class Options extends javax.swing.JFrame {
       compList.clear();
       listAllComponentsIn(this);
     }
-    
     public Object GetComponent(int i)
     {
         return compList.get(i);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;

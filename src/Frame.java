@@ -31,12 +31,12 @@ public class Frame extends JFrame{
         for (int i = 0; i < CheckBoxList.size(); i++) 
         {
             System.out.print(CheckBoxList.get(i).isSelected());
-            if(CheckBoxList.get(i).getText()=="Hard mode" && CheckBoxList.get(i).isSelected()) HardMode=true;
-            if(CheckBoxList.get(i).getText()=="AiMode" && CheckBoxList.get(i).isSelected()) AiMode=true;
+            if(CheckBoxList.get(i).getText()=="Hard_mode" && CheckBoxList.get(i).isSelected()) HardMode=true;
+            if(CheckBoxList.get(i).getText()=="AI_mode" && CheckBoxList.get(i).isSelected()) AiMode=true;
         }
         switch (paneltype){
             case "edit":
-                this.add(new LevelEditor(width,height,FileName));
+                this.add(new LevelEditor(width,height,FileName,UNIT_SIZE));
                 break;
             case "game":
                 this.add(new Panel(width,height,GameSpeed,FileName,HardMode,AiMode,SelectedSkin,UNIT_SIZE));

@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 public class LevelEditor extends JPanel{
@@ -40,12 +41,11 @@ public class LevelEditor extends JPanel{
    JLabel label = new JLabel();
    String State="Press S to save";
    ArrayList<Point2D.Double>MouseCoord=new ArrayList<Point2D.Double>();
-   LevelEditor(int x, int y,String FileName)
+   LevelEditor(int x, int y,String FileName,int UNIT_SIZE)
    {
         SaveAction=new SaveAction();
+        if(FileName==null) test.Set_Gameunits(UNIT_SIZE);
         test.ConstructLvL(x, y,FileName);
-        label.getInputMap().put(KeyStroke.getKeyStroke('s'), "SaveAction");
-        label.getActionMap().put("SaveAction", SaveAction);
         addLabel(State);
         this.setPreferredSize(new Dimension(x,y));
         this.setBackground(Color.black);
@@ -61,52 +61,10 @@ public class LevelEditor extends JPanel{
         super.paintComponent(g);
         draw(g);
     }
-    public void drawWall(Graphics g)
-    {   
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.red);
-        for (int i = 0; i < test.Wall.Wall.size(); i=i+2) 
-           {
-              double x=test.GetWallPoint(i).getX();
-              double y=test.GetWallPoint(i).getY();
-              if(test.GetWallPoint(i).getY()==test.GetWallPoint(i+1).getY())
-              {
-                 do
-                  {
-                     g2.fill(new Rectangle2D.Double(x*test.Get_Gameunits(),y*test.Get_Gameunits(),test.Get_Gameunits(),test.Get_Gameunits()));
-                     if(x<test.GetWallPoint(i+1).getX()) x++;
-                     else if(x>test.GetWallPoint(i+1).getX()) x--;
-                     
-                 }
-                  while(x!=test.GetWallPoint(i+1).getX());
-                  g2.fill(new Rectangle2D.Double(x*test.Get_Gameunits(),y*test.Get_Gameunits(),test.Get_Gameunits(),test.Get_Gameunits()));
-                  g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getX()*test.Get_Gameunits(),y*test.Get_Gameunits(),test.Get_Gameunits(),test.Get_Gameunits()));
-              }
-             
-              else if(test.GetWallPoint(i).getX()==test.GetWallPoint(i+1).getX())
-              {
-                  do
-                  {
-                     g2.fill(new Rectangle2D.Double(x*test.Get_Gameunits(),y*test.Get_Gameunits(),test.Get_Gameunits(),test.Get_Gameunits()));
-                     if(y<test.GetWallPoint(i+1).getY()) y++;
-                     else if(y>test.GetWallPoint(i+1).getY()) y--;
-                  }
-                  while(y!=test.GetWallPoint(i+1).getY());
-                  //g2.fill(new Rectangle2D.Double(y,x,test.Get_Gameunits(),test.Get_Gameunits()));
-                  //g2.fill(new Rectangle2D.Double(test.GetWallPoint(i+1).getY(),x,test.Get_Gameunits(),test.Get_Gameunits()));
-              }
-           }
-       
-    }
-    
-    public double CalcDistance(Point2D x, Point2D y)
-    {
-        return Math.sqrt(Math.pow(y.getX()-x.getY(),2)+Math.pow(y.getY()-x.getY(),2));
-    }
-    public void drawClick(Graphics g)
+    public boolean drawClick(Graphics g,boolean clicked,ArrayList<Point2D.Double>MouseCoord,double mouseX,double mouseY,Level test)
     {
         
-        if(clicked){
+        if(!clicked) return false;
         Point2D.Double Corner=new Point2D.Double();
         MouseCoord.add(new Point2D.Double(mouseX, mouseY));
         Graphics2D g2 = (Graphics2D) g;
@@ -128,60 +86,23 @@ public class LevelEditor extends JPanel{
                test.Wall.Add(MouseCoord, test.Get_Gameunits());
                g2.fill(new Rectangle2D.Double(MouseCoord.get(1).getX()*test.Get_Gameunits(),MouseCoord.get(0).getY()*test.Get_Gameunits(),test.Get_Gameunits(),test.Get_Gameunits()));   
         }
-        repaint();
         MouseCoord.clear();
-        }
-        clicked=false;
-        }
-    }
-    
-    public void drawGrid(Graphics g)
-    {
-        Graphics2D g2=(Graphics2D) g;
-        g2.setColor(Color.red);
-        for (double i = test.Calc_QuarterScreen(); i <= test.Calc_RightQuarter(); i++) 
-        {
-            g2.draw(new Line2D.Double(i*test.Get_Gameunits(),0,i*test.Get_Gameunits(),test.Get_ScreenHeight()*test.Get_Gameunits()));
-        }
-        for (double x = 0; x < test.Screen_Height/test.Get_Gameunits()-1; x++) 
-        {
-            g2.draw(new Line2D.Double(test.Calc_QuarterScreen()*test.Get_Gameunits(),x*test.Get_Gameunits(),test.Calc_RightQuarter()*test.Get_Gameunits(),x*test.Get_Gameunits()));
+        repaint();
         }
         
+        return true;
     }
     public void draw(Graphics g)
     {
         Render.drawGrid(g, test);
         Render.drawWall(g, test);
-        if(Render.drawClick(g, clicked, MouseCoord, mouseX, mouseY, test))
+        if(drawClick(g, clicked, MouseCoord, mouseX, mouseY, test))
         {
             
             clicked=false;
         }
     }
-    public void callRepaint()
-    {
-        repaint();
-    }
-    public void SaveLevel(String name)
-    {
-        try{
-        File obj=new File(name);
-        if(obj.createNewFile())
-        {
-            //show message stating file was created
-        }
-        else
-        {
-            //file exists
-            //do rest
-        }
-        }
-        catch(IOException e)
-        {
-        
-        }   
-    }
+ 
     public void addLabel(String state)
     {
         label.setText(state);
@@ -199,7 +120,7 @@ public class LevelEditor extends JPanel{
         @Override
         public void actionPerformed(ActionEvent e) {
             label.setText("Saved");
-            test.Save();
+            //test.Save();
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
         
@@ -219,8 +140,6 @@ public class LevelEditor extends JPanel{
             {
                 clicked=true;
             }
-            System.out.print(mouseX+"....."+mouseY+" ");
-            
             repaint();
         }
     }
@@ -232,7 +151,9 @@ public class LevelEditor extends JPanel{
             switch(e.getKeyCode())
             {
                 case KeyEvent.VK_S:
-                    test.Save();
+                    
+                    String Savename=JOptionPane.showInputDialog("enter save name","SAVENAME");
+                    test.Save(Savename);
                     label.setText("saved");
             }
         }

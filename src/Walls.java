@@ -33,6 +33,7 @@ public class Walls {
         {
            y++;
         }
+        y-=1;
         for (int i = 0; i < 2; i++) 
         {
             Wall.add(wallStart=new Point2D.Double(quarterScreen,i*(x)));
@@ -65,10 +66,6 @@ public class Walls {
         Wall.add(wallStart=new Point2D.Double(Coords.get(0).getX(),Coords.get(0).getY()));
         Wall.add(wallEnd=new Point2D.Double(Coords.get(1).getX(),Coords.get(1).getY()));
         }
-    }
-    public void CalcDistance(Point2D x, Point2D y)
-    {
-        Math.sqrt(Math.pow(y.getX()-x.getY(),2)+Math.pow(y.getY()-x.getY(),2));
     }
     public Point2D.Double getArrayPoint(int i)
     {

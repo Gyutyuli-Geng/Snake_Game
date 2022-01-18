@@ -21,6 +21,8 @@ double xPos;
 double yPos;
 int highscore;
 double MAP_UNITS;
+boolean Hardmode;
+String difficulty;
 ArrayList<Point2D.Double>Wall=new ArrayList<Point2D.Double>();
 ArrayList<Point2D.Double>Snek=new ArrayList<Point2D.Double>();
 // level

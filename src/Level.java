@@ -27,16 +27,20 @@ public class Level extends JPanel {
     double yPos;
     char dir='R';
     int highscore=0;
+    int currscore=0;
     double Hoffset;
+    double gamespeed;
     Random ran=new Random();
     Point apple=new Point();
     Snake Player=new Snake();
     Walls Wall=new Walls();
     CollisionChecker Collcheck=new CollisionChecker();
+    String Loadedlvl=null;
     public void Load(String filename)
     {
         try{
-        SaveData data=(SaveData) ResourceManager.load(filename);
+        String datapath = System.getProperty("user.dir")+"/Saves/";
+        SaveData data=(SaveData) ResourceManager.load(datapath+filename);
         MAP_UNITS=data.MAP_UNITS;
         Wall.Wall=data.Wall;
         highscore=data.highscore;
@@ -45,25 +49,61 @@ public class Level extends JPanel {
         {}
         
     }
-    public void Save()
+    public void Load(String Name, boolean def)
+    {
+        try{
+        String datapath = System.getProperty("user.dir")+"/Saves/";
+        SaveData data=(SaveData) ResourceManager.load(datapath+Name);
+        highscore=data.highscore;
+        }
+        catch(Exception e)
+        {}
+    }
+    public void Save(String Name)
     {
         
         try{
+        String datapath = System.getProperty("user.dir")+"/Saves/";
         SaveData data=new SaveData();
         data.MAP_UNITS=MAP_UNITS;
         data.Wall=Wall.Wall;
         data.highscore=highscore;
-        ResourceManager.save(data, "1.testSave");
+        ResourceManager.save(data, datapath+Name+".SnakeSave");
+        }
+        catch(Exception e){System.out.println(e);}
+    }
+    public void SaveLoaded(String Name)
+    {
+        
+        try{
+        String datapath = System.getProperty("user.dir")+"/Saves/";
+        SaveData data=new SaveData();
+        data.MAP_UNITS=MAP_UNITS;
+        data.Wall=Wall.Wall;
+        data.highscore=highscore;
+        ResourceManager.save(data, datapath+Name);
+        }
+        catch(Exception e){System.out.println(e);}
+    }
+    public void Save(String Name, boolean def)
+    {
+        try{
+            String datapath = System.getProperty("user.dir")+"/Saves/";
+        SaveData data=new SaveData();
+        data.highscore=highscore;
+        ResourceManager.save(data, datapath+Name+".SnakeSave");
         }
         catch(Exception e){}
     }
     public void ConstructLvL(int x,int y,String FileName)
     {
+        Loadedlvl=FileName;
         Screen_Width=x;
         Screen_Height=(x/16)*9;
         Hoffset=(y-Screen_Height)/2;
         if(FileName==null)
         {
+        Load("Default.SnakeSave",true);
         UNIT_SIZE=Math.round(Screen_Width/MAP_UNITS);
         Player.CreateSnake(UNIT_SIZE);
         xPos=Calc_QuarterScreen()+Player.snakeSize-1;
@@ -72,15 +112,17 @@ public class Level extends JPanel {
         }
         else
         {
+            Load(FileName);
             UNIT_SIZE=Math.round(Screen_Width/MAP_UNITS);
             Player.CreateSnake(UNIT_SIZE);
             xPos=Calc_QuarterScreen()+Player.snakeSize-1;
             yPos=1;
-            Load(FileName);
         }
-        
     }
-  
+    public String getLoadedlvl()
+    {
+        return Loadedlvl;
+    }
     public Point2D.Double GetWallPoint(int i)
     {
         return Wall.getArrayPoint(i);
@@ -88,6 +130,10 @@ public class Level extends JPanel {
     public int Get_Highscore()
     {
         return highscore;
+    }
+    public int Get_Currscore()
+    {
+        return currscore;
     }
     public void Set_Gameunits(int x)
     {
@@ -153,6 +199,10 @@ public class Level extends JPanel {
                 break;
         }
     }
+    public char getDir()
+    {
+        return dir;
+    }
     public boolean checkCollision(int i)
     {
         return Player.getHead().equals(Player.getArrayPoint(i));
@@ -210,8 +260,10 @@ public class Level extends JPanel {
     {
         if(!apple.equals(Player.getHead())) return false;
         Player.growSnake();
-        Save();
-        highscore++;
+        currscore++;
+        if(highscore<=currscore) highscore=currscore;
+        
+        
         do
         {
             GenApple();
@@ -226,6 +278,14 @@ public class Level extends JPanel {
     public double Get_appleY()
     {
         return apple.getY();
+    }
+    public void setGamespeed(double speed)
+    {
+        gamespeed=speed;
+    }
+    public double getGamespeed()
+    {
+        return gamespeed;
     }
     public void GenApple()
     {

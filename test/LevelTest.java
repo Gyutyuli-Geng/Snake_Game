@@ -90,7 +90,7 @@ public class LevelTest {
     @Test
     public void testCalc_QuarterScreen() {
         Level level=new Level();
-        level.ConstructLvL(0,0);
+        level.ConstructLvL(0,0,null);
         assertNotNull(level.Calc_QuarterScreen());
     }
 
@@ -100,7 +100,7 @@ public class LevelTest {
     @Test
     public void testCalc_RightQuarter() {
         Level level=new Level();
-        level.ConstructLvL(0,0);
+        level.ConstructLvL(0,0,null);
         assertNotNull(level.Calc_RightQuarter());
         
     }
@@ -111,7 +111,7 @@ public class LevelTest {
     @Test
     public void testMove() {
         Level level=new Level();
-        level.ConstructLvL(0,0);
+        level.ConstructLvL(0,0,null);
         assertNotNull(level.GetSnakeDir());
         assertNotNull(level.Player.Snek);
     }
@@ -122,7 +122,7 @@ public class LevelTest {
     @Test
     public void testCheckCollision() {
         Level level=new Level();
-        level.ConstructLvL(0, 0);
+        level.ConstructLvL(0, 0,null);
         if(level.Player.getHead().equals(level.Player.getArrayPoint(2)))
         {
             assertSame("snek collides with itself",level.Player.getHead(),level.Player.getArrayPoint(2));
@@ -136,7 +136,7 @@ public class LevelTest {
     @Test
     public void testCheckWallCollision() {
         Level level=new Level();
-        level.ConstructLvL(0,0);
+        level.ConstructLvL(0,0,null);
         assertNotNull(level.Player.getHead());
         assertNotNull(level.Wall.Wall);
     }
@@ -147,7 +147,7 @@ public class LevelTest {
     @Test
     public void testCheckAppleGenCoords() {
         Level level=new Level();
-        level.ConstructLvL(0,0);
+        level.ConstructLvL(0,0,null);
         assertNotNull(level.apple);
         assertNotNull(level.Wall.Wall);
     }
@@ -207,7 +207,7 @@ public class LevelTest {
     @Test
     public void testCheckApple() {
          Level level=new Level();
-         level.ConstructLvL(0, 0);
+         level.ConstructLvL(1920, 1080,null);
          level.GenApple();
         if(level.apple.equals(level.Player.getHead())) 
         {
@@ -241,12 +241,13 @@ public class LevelTest {
     public void testGenApple() {
         
         Level level=new Level();
-        level.ConstructLvL(0, 0);
+        level.ConstructLvL(1920, 1080,null);
         Point apple=new Point();
         Random ran=new Random();
-        level.appleX=ran.nextInt((int)(level.Calc_RightQuarter())-level.Calc_QuarterScreen())+level.Calc_QuarterScreen();
-        level.appleY=ran.nextInt((int)(level.Screen_Height/level.UNIT_SIZE))*level.UNIT_SIZE;
-        level.apple.setLocation(level.appleX*level.UNIT_SIZE,level.appleY);
+       
+        level.appleX=ran.nextInt((int)level.Calc_RightQuarter()-(int)level.Calc_QuarterScreen())+level.Calc_QuarterScreen();
+        level.appleY=(ran.nextInt((int)(level.Screen_Height/level.UNIT_SIZE)-0)+0);
+        apple.setLocation(Math.floor(level.appleX*level.UNIT_SIZE),Math.floor(level.appleY*level.UNIT_SIZE));
         assertNotNull(level.appleX);
         assertNotNull(level.appleY);
         assertNotNull("ye apple got generated",level.apple);

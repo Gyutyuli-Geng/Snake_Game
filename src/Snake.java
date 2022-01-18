@@ -85,7 +85,10 @@ public class Snake {
     {
         return head.getY();
     }
-    
+    public ArrayList<Point2D.Double> getSnake()
+    {
+        return Snek;
+    }
     public boolean checkSnakeGrow()
     {
         if(growsnake)

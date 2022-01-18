@@ -50,7 +50,6 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -72,8 +71,6 @@ public class Menu extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        jButton2.setText("skin select");
 
         jButton3.setText("options");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +132,6 @@ public class Menu extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jButton1)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -158,15 +154,13 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(jButton6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(28, 28, 28)
-                .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
                 .addGap(18, 18, 18)
                 .addComponent(jButton5)
-                .addGap(120, 120, 120))
+                .addGap(170, 170, 170))
         );
 
         pack();
@@ -174,6 +168,7 @@ public class Menu extends javax.swing.JFrame {
 
     public void fuckjava()
     {
+        
         OptFrame=new Options();
         GraphicsDevice gDev;
         GraphicsEnvironment gEnv=GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -184,6 +179,7 @@ public class Menu extends javax.swing.JFrame {
                 if(mode[j].getWidth()==mode[j-1].getWidth());
                 else  OptFrame.addRes(mode[j].getWidth()+"x"+mode[j].getHeight());       
         }
+        
         String datapath = System.getProperty("user.dir")+"/Skins/";
         File[] directories = new File(datapath).listFiles(File::isDirectory);
         for (int i = 0; i < directories.length; i++) 
@@ -191,6 +187,8 @@ public class Menu extends javax.swing.JFrame {
             OptFrame.addSkin(directories[i].getName());    
         }
         OptFrame.setSelectedskin("Default");
+        OptFrame.StoreComponents();
+        OptFrame.optLoad();
         
                 
     }
@@ -244,7 +242,7 @@ public class Menu extends javax.swing.JFrame {
         // lvlselect
         JFileChooser fc=new JFileChooser();
         File workingDirectory=new File(System.getProperty("user.dir"));
-        FileFilter filter = new FileNameExtensionFilter("Level Save","testSave");
+        FileFilter filter = new FileNameExtensionFilter("Level Save","SnakeSave");
         fc.setCurrentDirectory(workingDirectory);
         fc.setDialogTitle("Select a level");
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -306,7 +304,6 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
