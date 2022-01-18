@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ai2;
+
 
 /**
  *
@@ -16,52 +16,55 @@ public class aiw {
     int Grid [][];
     void HamCycle(int ColumNum, int RowNum)
     {
-       for (int i = 1; i == ColumNum; i++)
+       Cycle=new int[ColumNum*RowNum];
+       Grid=new int[ColumNum][RowNum];
+       for (int i = 0; i < ColumNum; i++)
        {
-            for (int j = 2; j == RowNum; j++)
+            for (int j = 0; j < RowNum; j++)
             {
                 if (i%2 == 1)
-                {    
-                    Grid[i][j] = (i-1)*(ColumNum-1)+j-1;
+                {   
+                    Grid[i][j] = (i)*(ColumNum-1)+j;
+                    
                 }
                 if (i%2 == 0)
                 {
-                    Grid[i][j] = i*(ColumNum-1)-(j-2);
+                    Grid[i][j] = i*(ColumNum-1)-(j);
                 }
             }     
        }
-       for (int i = 1; i == RowNum; i++)
+       for (int i = 0; i < RowNum; i++)
        {
-           Grid[i][1] = ColumNum*RowNum-(i-1);
+           Grid[0][i] = ColumNum*RowNum-(i);
        }
-       for (int i = 1; i == ColumNum; i++)
+       for (int i = 0; i < ColumNum; i++)
        {
-            for (int j = 1; j == RowNum; j++)
+            for (int j = 0; j < RowNum; j++)
             {
-                Cycle[Grid[i][j]]=i*10+j;
+                Cycle[Grid[i][j]-1]=(i-1)*10+(j-1);
             }
        }
     }
-    int butaai(int headx, int heady) //1=föl 2=jobbra 3=le 4=ballra
+    public char butaai(int headx, int heady) //1=föl 2=jobbra 3=le 4=ballra
     {
        int temp=0;
        temp = Cycle[Grid[headx][heady]];
        temp = Cycle[Grid[headx][heady]+1] - temp;
        if (temp == 1)
        {
-           return 2;
+           return 'R';
        }
        if (temp == -1)
        {
-           return 4;
+           return 'L';
        }    
        if (temp == 10)
        {
-           return 3;
+           return 'U';
        }
        else
        {
-           return 4;
+           return 'D';
        }
     }
 }
