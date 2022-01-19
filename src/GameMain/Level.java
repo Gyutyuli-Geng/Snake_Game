@@ -71,7 +71,7 @@ public class Level extends JPanel {
         SaveData data=new SaveData();
         data.MAP_UNITS=MAP_UNITS;
         data.Wall=Wall.Wall;
-        data.highscore=highscore;
+        //data.highscore=highscore;//
         ResourceManager.save(data, datapath+Name+".SnakeSave");
         }
         catch(Exception e){System.out.println(e);}
